@@ -1,4 +1,6 @@
-﻿namespace CsharpTraining
+﻿using System.Security.Principal;
+
+namespace CsharpTraining
 {
     internal class BankingSystem
     {
@@ -99,8 +101,16 @@
 
                     case 5:
                         Console.Write("Enter account type S / C / F: ");
-                        accountType = Convert.ToChar(Console.ReadLine());
-                        Console.WriteLine("Account type set to: " + accountType);
+                        char type = char.ToUpper(Convert.ToChar(Console.ReadLine()));
+                        if(type.Equals('S') || type.Equals('C') || type.Equals('F'))
+                        {
+                            accountType = type;
+                            Console.WriteLine("Account type set to: " + accountType);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid account type");
+                        }
                         break;
 
                     case 6:
@@ -179,18 +189,18 @@
             while(module != 0)
             {
                 Console.Write("\nNATIONAL BANK OF OMAN  —  Unified Banking System\n\n" +
-                "Task 1  ->  System Setup (populate all shared variables first)\n\n" +
-                "MAIN MENU  (available after setup)\n" +
-                "1) ATM Services          ->  Tasks  2,  3,  4,  5\n" +
-                "2) Account Management    ->  Tasks  6,  7,  8\n" +
-                "3) Loan Services         ->  Tasks  9, 10, 11\n" +
-                "4) Currency Exchange     ->  Tasks 12, 13\n" +
-                "5) Credit Card Portal    ->  Tasks 14, 15\n" +
-                "6) Branch Services       ->  Tasks 16, 17, 18\n" +
-                "7) Reports & Admin       ->  Tasks 19, 20, 21\n" +
-                "8) [BONUS] Full Terminal ->  Task  22  (optional)\n" +
-                "0) Exit\n\n" +
-                "Select module: "
+                    "Task 1  ->  System Setup (populate all shared variables first)\n\n" +
+                    "MAIN MENU  (available after setup)\n" +
+                    "1) ATM Services          ->  Tasks  2,  3,  4,  5\n" +
+                    "2) Account Management    ->  Tasks  6,  7,  8\n" +
+                    "3) Loan Services         ->  Tasks  9, 10, 11\n" +
+                    "4) Currency Exchange     ->  Tasks 12, 13\n" +
+                    "5) Credit Card Portal    ->  Tasks 14, 15\n" +
+                    "6) Branch Services       ->  Tasks 16, 17, 18\n" +
+                    "7) Reports & Admin       ->  Tasks 19, 20, 21\n" +
+                    "8) [BONUS] Full Terminal ->  Task  22  (optional)\n" +
+                    "0) Exit\n\n" +
+                    "Select module: "
                 );
                 module = int.Parse(Console.ReadLine());
 
@@ -201,12 +211,12 @@
                         while (atmOption != 0)
                         {
                             Console.Write("\n=== ATM SERVICES ===\n\n" +
-                            "1) Welcome & Display\n" +
-                            "2) Account Data\n" +
-                            "3) PIN Validation\n" +
-                            "4) Receipt Printer\n" +
-                            "0) Back to Main Menu\n\n" +
-                            "Select: "
+                                "1) Welcome & Display\n" +
+                                "2) Account Data\n" +
+                                "3) PIN Validation\n" +
+                                "4) Receipt Printer\n" +
+                                "0) Back to Main Menu\n\n" +
+                                "Select: "
                             );
                             atmOption = int.Parse(Console.ReadLine());
                             switch (atmOption)
@@ -216,11 +226,11 @@
                                     while (bankOption != 0)
                                     {
                                         Console.Write("\n=== WELCOME & DISPLAY ===\n\n" +
-                                        "1) Bank Info\n" +
-                                        "2) Branch Info\n" +
-                                        "3) Opening Hours\n" +
-                                        "0) Back\n\n" +
-                                        "Select: "
+                                            "1) Bank Info\n" +
+                                            "2) Branch Info\n" +
+                                            "3) Opening Hours\n" +
+                                            "0) Back\n\n" +
+                                            "Select: "
                                         );
                                         bankOption = int.Parse(Console.ReadLine());
                                         switch (bankOption)
@@ -253,6 +263,69 @@
                                     break;
 
                                 case 2:
+                                    int viewOption = 1;
+                                    while (viewOption != 0)
+                                    {
+                                        Console.Write("\n=== VIEW ACCOUNT DATA ===\n\n" +
+                                            "Data loaded from system setup\n\n" +
+                                            "1) Account Number\n" +
+                                            "2) Holder Name\n" +
+                                            "3) Balance\n" +
+                                            "4) Account Status\n" +
+                                            "5) Account Type\n" +
+                                            "0) Back\n\n" +
+                                            "Select feild: "
+                                        );
+                                        viewOption = int.Parse(Console.ReadLine());
+                                        switch (viewOption)
+                                        {
+                                            case 1:
+                                                Console.WriteLine("Account Number: " + accountNumber);
+                                                break;
+
+                                            case 2:
+                                                Console.WriteLine("Holder Name: " + holderName);
+                                                break;
+
+                                            case 3:
+                                                Console.WriteLine($"Balance: {balance:N3} OMR");
+                                                break;
+                                            
+                                            case 4:
+                                                if (isActive)
+                                                {
+                                                    Console.WriteLine("The account is Active");
+                                                }
+                                                else 
+                                                {
+                                                    Console.WriteLine("The account is NOT active");
+                                                }
+                                                break;
+                                            
+                                            case 5:
+                                                if (accountType.Equals('S'))
+                                                {
+                                                    Console.WriteLine("Savings (S) account");
+                                                }
+                                                else if (accountType.Equals('C'))
+                                                {
+                                                    Console.WriteLine("Current (C) account");
+                                                }
+                                                else if (accountType.Equals('F'))
+                                                {
+                                                    Console.WriteLine("Fixed Deposit (F) account");
+                                                }
+                                                break;
+
+                                            case 0:
+                                                Console.WriteLine("Returning to ATM Services...");
+                                                break;
+
+                                            default:
+                                                Console.WriteLine("Field not available.");
+                                                break;
+                                        }
+                                    }
                                     break;
 
                                 case 3:
