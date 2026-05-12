@@ -23,13 +23,14 @@
             double annualRate = 0.000;
             double avgBalance = 0.000;
 
-            //string bankName = "National Bank of Oman";
-            //string tagline = "Your Trusted Banking Partner";
-            //string foundYear = "1973";
-            //string branchName = "Muscat Main Branch";
-            //string city = "Muscat";
-            //string Address = "Maktabi Building, Ruwi, Muscat, Oman";
-            //string openHours = "Weekdays (Sun–Thu): 8:00 AM – 3:00 PM\nWeekends (Sat): 9:00 AM – 1:00 PM\nFriday: Closed";
+            //varibles needed for Task 2
+            string bankName = "National Bank of Oman";
+            string tagline = "Your Trusted Banking Partner";
+            string foundYear = "1973";
+            string branchName = "Muscat Main Branch";
+            string city = "Muscat";
+            string Address = "Maktabi Building, Ruwi, Muscat, Oman";
+            string openHours = "Weekdays (Sun–Thu): 8:00 AM – 3:00 PM\nWeekends (Sat): 9:00 AM – 1:00 PM\nFriday: Closed";
 
 
             /*
@@ -62,7 +63,7 @@
                 Console.Write("\nSelect option: ");
                 option = int.Parse(Console.ReadLine());
 
-                switch (option)
+                switch(option)
                 {
                     case 1:
                         Console.Write("Enter account number: ");
@@ -167,103 +168,148 @@
                         break;
                 }
             }
-            
-            
+
+
             /*
              * ===========================================================
              *                 System Menu Architecture
              * ===========================================================
             */
-            //Console.Write("NATIONAL BANK OF OMAN  —  Unified Banking System\n\n" +
-            //    "MAIN MENU\n" +
-            //    "1) ATM Services          >  Tasks  1,  2,  3,  4\n" +
-            //    "2) Account Management    >  Tasks  5,  6,  7\n" +
-            //    "3) Loan Services         >  Tasks  8,  9, 10\n" +
-            //    "4) Currency Exchange     >  Tasks 11, 12\n" +
-            //    "5) Credit Card Portal    >  Tasks 13, 14\n" +
-            //    "6) Branch Services       >  Tasks 15, 16, 17\n" +
-            //    "7) Reports & Admin       >  Tasks 18, 19, 20\n" +
-            //    "8) [BONUS] Full Terminal >  Task  21\n" +
-            //    "0) Exit\n\n" +
-            //    "Select module: "
-            //);
-            //int module = int.Parse(Console.ReadLine());
-            
-            //switch(module)
-            //{
-            //    case 1:
-            //        Console.Write("\n=== ATM SERVICES ===\n\n" +
-            //        "1) Bank Info\n" +
-            //        "2) Branch Info\n" +
-            //        "3) Opening Hours\n" +
-            //        "0) Back to Main Menu\n\n" +
-            //        "Select: "
-            //        );
-            //        int option = int.Parse(Console.ReadLine());
-            //        switch (option) {
-            //            case 1:
-            //                Console.WriteLine("Bank Name: " + bankName);
-            //                Console.WriteLine("Tagline: " + tagline);
-            //                Console.WriteLine("Found year: " + foundYear);
-            //                break;
+            int module = 1;
+            while(module != 0)
+            {
+                Console.Write("\nNATIONAL BANK OF OMAN  —  Unified Banking System\n\n" +
+                "Task 1  ->  System Setup (populate all shared variables first)\n\n" +
+                "MAIN MENU  (available after setup)\n" +
+                "1) ATM Services          ->  Tasks  2,  3,  4,  5\n" +
+                "2) Account Management    ->  Tasks  6,  7,  8\n" +
+                "3) Loan Services         ->  Tasks  9, 10, 11\n" +
+                "4) Currency Exchange     ->  Tasks 12, 13\n" +
+                "5) Credit Card Portal    ->  Tasks 14, 15\n" +
+                "6) Branch Services       ->  Tasks 16, 17, 18\n" +
+                "7) Reports & Admin       ->  Tasks 19, 20, 21\n" +
+                "8) [BONUS] Full Terminal ->  Task  22  (optional)\n" +
+                "0) Exit\n\n" +
+                "Select module: "
+                );
+                module = int.Parse(Console.ReadLine());
 
-            //            case 2:
-            //                Console.WriteLine("Branch Name: " + branchName);
-            //                Console.WriteLine("City: " + city);
-            //                Console.WriteLine("Address: " + Address);
-            //                break;
+                switch(module)
+                {
+                    case 1:
+                        int atmOption = 1;
+                        while (atmOption != 0)
+                        {
+                            Console.Write("\n=== ATM SERVICES ===\n\n" +
+                            "1) Welcome & Display\n" +
+                            "2) Account Data\n" +
+                            "3) PIN Validation\n" +
+                            "4) Receipt Printer\n" +
+                            "0) Back to Main Menu\n\n" +
+                            "Select: "
+                            );
+                            atmOption = int.Parse(Console.ReadLine());
+                            switch (atmOption)
+                            {
+                                case 1:
+                                    int bankOption = 1;
+                                    while (bankOption != 0)
+                                    {
+                                        Console.Write("\n=== WELCOME & DISPLAY ===\n\n" +
+                                        "1) Bank Info\n" +
+                                        "2) Branch Info\n" +
+                                        "3) Opening Hours\n" +
+                                        "0) Back\n\n" +
+                                        "Select: "
+                                        );
+                                        bankOption = int.Parse(Console.ReadLine());
+                                        switch (bankOption)
+                                        {
+                                            case 1:
+                                                Console.WriteLine("Bank Name: " + bankName);
+                                                Console.WriteLine("Tagline: " + tagline);
+                                                Console.WriteLine("Found year: " + foundYear);
+                                                break;
 
-            //            case 3:
-            //                Console.WriteLine("Opening Hours\n" + openHours);
-            //                break;
+                                            case 2:
+                                                Console.WriteLine("Branch Name: " + branchName);
+                                                Console.WriteLine("City: " + city);
+                                                Console.WriteLine("Address: " + Address);
+                                                break;
 
-            //            case 0:
-            //                Console.WriteLine("Returning to Main Menu...");
-            //                break;
+                                            case 3:
+                                                Console.WriteLine("Opening Hours\n" + openHours);
+                                                break;
 
-            //            default:
-            //                Console.WriteLine("Invalid selection. Please try again.");
-            //                break;
-            //        }
-            //        break;
+                                            case 0:
+                                                Console.WriteLine("Returning to ATM Services...");
+                                                break;
 
-            //    case 2:
+                                            default:
+                                                Console.WriteLine("Invalid selection. Please try again.");
+                                                break;
+                                        }
+                                    }
+                                    break;
 
-            //        break;
+                                case 2:
+                                    break;
 
-            //    case 3:
+                                case 3:
+                                    break;
 
-            //        break;
+                                case 4:
+                                    break;
 
-            //    case 4:
+                                case 0:
+                                    Console.WriteLine("Returning to Main Menu...");
+                                    break;
 
-            //        break;
+                                default:
+                                    Console.WriteLine("Invalid selection. Please try again.");
+                                    break;
+                            }
+                        }
+                        break;
 
-            //    case 5:
+                    case 2:
 
-            //        break;
+                        break;
 
-            //    case 6:
+                    case 3:
 
-            //        break;
+                        break;
 
-            //    case 7:
+                    case 4:
 
-            //        break;
+                        break;
 
-            //    case 8:
+                    case 5:
 
-            //        break;
+                        break;
 
-            //    case 0:
+                    case 6:
 
-            //        break;
+                        break;
 
-            //    default:
+                    case 7:
 
-            //        Console.WriteLine("Invalid module");
-            //        break;
-            //}
+                        break;
+
+                    case 8:
+
+                        break;
+
+                    case 0:
+
+                        break;
+
+                    default:
+
+                        Console.WriteLine("Invalid module");
+                        break;
+                }
+            }
         }
     }
 }
