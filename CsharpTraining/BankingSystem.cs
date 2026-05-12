@@ -385,6 +385,56 @@ namespace CsharpTraining
                                     break;
 
                                 case 4:
+                                    int printOption = 1;
+                                    while (printOption != 0)
+                                    {
+                                        Console.Write("\n=== PRINT RECEIPT ===\n\n" +
+                                            "1) Short Receipt\n" +
+                                            "2) Detailed Receipt\n" +
+                                            "3) Balance Only\n" +
+                                            "0) Back\n\n" +
+                                            "Select format: "
+                                        );
+                                        printOption = int.Parse(Console.ReadLine());
+                                        switch (printOption)
+                                        {
+                                            case 1:
+                                                string maskedacc = $"****{accountNumber % 10000}";
+                                                Console.WriteLine($"Holder: {holderName}\n" +
+                                                    $"Account: {accountNumber}\n" +
+                                                    $"Balance: {balance:N3} OMR\n");
+                                                break;
+                                            case 2:
+                                                Console.WriteLine(
+                                                    $"Account Number : {accountNumber}\n" +
+                                                    $"Holder Name    : {holderName}\n" +
+                                                    $"Balance        : {balance:N3} OMR\n" +
+                                                    $"Account Active : {isActive}\n" +
+                                                    $"Account Type   : {accountType}\n" +
+                                                    $"Employed       : {isEmployed}\n" +
+                                                    $"Salary         : {salary:N3} OMR\n" +
+                                                    $"Credit Score   : {creditScore}\n" +
+                                                    $"Age            : {age}\n" +
+                                                    $"Last Deposit   : {deposit:N3} OMR\n" +
+                                                    $"Last Withdrawal: {withdrawal:N3} OMR\n" +
+                                                    $"Annual Rate    : {annualRate}\n" +
+                                                    $"Avg Balance    : {avgBalance:N3} OMR"
+                                                );
+                                                break;
+
+                                            case 3:
+                                                Console.WriteLine($"Balance: {balance:N3} OMR");
+                                                break;
+
+                                            case 0:
+                                                Console.WriteLine("Returning to ATM Services...");
+                                                break;
+
+                                            default:
+                                                Console.WriteLine("Invalid receipt format.");
+                                                break;
+                                        }
+                                    }
                                     break;
 
                                 case 0:
