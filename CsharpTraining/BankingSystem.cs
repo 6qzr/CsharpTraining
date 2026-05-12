@@ -34,6 +34,10 @@ namespace CsharpTraining
             string Address = "Maktabi Building, Ruwi, Muscat, Oman";
             string openHours = "Weekdays (Sun–Thu): 8:00 AM – 3:00 PM\nWeekends (Sat): 9:00 AM – 1:00 PM\nFriday: Closed";
 
+            //varibles needed for Task 4
+            const string CORRECT_PIN = "4821"; 
+            const int MAX_ATTEMPTS = 3;
+
 
             /*
              * ===========================================================
@@ -211,10 +215,10 @@ namespace CsharpTraining
                         while (atmOption != 0)
                         {
                             Console.Write("\n=== ATM SERVICES ===\n\n" +
-                                "1) Welcome & Display\n" +
-                                "2) Account Data\n" +
-                                "3) PIN Validation\n" +
-                                "4) Receipt Printer\n" +
+                                "1) Bank Info\n" +
+                                "2) View Account Data\n" +
+                                "3) Authenticate\n" +
+                                "4) Print Receipt\n" +
                                 "0) Back to Main Menu\n\n" +
                                 "Select: "
                             );
@@ -225,7 +229,7 @@ namespace CsharpTraining
                                     int bankOption = 1;
                                     while (bankOption != 0)
                                     {
-                                        Console.Write("\n=== WELCOME & DISPLAY ===\n\n" +
+                                        Console.Write("\n=== BANK INFO ===\n\n" +
                                             "1) Bank Info\n" +
                                             "2) Branch Info\n" +
                                             "3) Opening Hours\n" +
@@ -329,6 +333,55 @@ namespace CsharpTraining
                                     break;
 
                                 case 3:
+                                    int authOption = 1;
+                                    int attempts = MAX_ATTEMPTS;
+                                    while (authOption != 0 && attempts > 0)
+                                    {
+                                        Console.Write("\n=== AUTHENTICATION ===\n\n" +
+                                            "1) Enter PIN\n" +
+                                            "2) Forgot PIN\n" +
+                                            "0) Back\n\n" +
+                                            "Select: "
+                                        );
+                                        authOption = int.Parse(Console.ReadLine());
+                                        switch (authOption)
+                                        {
+                                            case 1:
+                                                Console.Write("Enter PIN: ");
+                                                string pin = Console.ReadLine();
+                                                if (pin.Equals(CORRECT_PIN))
+                                                {
+                                                    Console.WriteLine("Access granted. Welcome, " + holderName);
+                                                }
+                                                else if (pin.Length != 4)
+                                                {
+                                                    Console.WriteLine("Invalide PIN format");
+                                                    attempts--;
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("Incorrect PIN");
+                                                    attempts--;
+                                                }
+
+                                                if (attempts == 0)
+                                                {
+                                                    Console.WriteLine("Max attempts reached...");
+                                                }
+                                                break;
+                                            case 2:
+                                                Console.WriteLine("Please visit the nearest branch with your National ID.");
+                                                break;
+
+                                            case 0:
+                                                Console.WriteLine("Returning to ATM Services...");
+                                                break;
+
+                                            default:
+                                                Console.WriteLine("Invalid option");
+                                                break;
+                                        }
+                                    }
                                     break;
 
                                 case 4:
