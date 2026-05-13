@@ -39,6 +39,9 @@ namespace CsharpTraining
             const string CORRECT_PIN = "4821"; 
             const int MAX_ATTEMPTS = 3;
 
+            //varibles needed for Task 9
+            const double MAX_WITHDRAWAL = 5000.000;
+
 
             /*
              * ===========================================================
@@ -658,7 +661,96 @@ namespace CsharpTraining
                         break;
 
                     case 3:
+                        int loanSerOption = 1;
+                        while (loanSerOption != 0)
+                        {
+                            Console.Write("\n=== Loan Services ===\n\n" +
+                                "1) ATM Transaction\n" +
+                                "2) Fee Schedule\n" +
+                                "3) Repayment Calculator\n" +
+                                "0) Back to Main Menu\n\n" +
+                                "Select: "
+                            );
+                            loanSerOption = int.Parse(Console.ReadLine());
+                            switch (loanSerOption)
+                            {
+                                case 1:
+                                    int atmTransOption = 1;
+                                    while (atmTransOption != 0)
+                                    {
+                                        Console.Write("\n=== ATM TRANSACTION ===\n\n" +
+                                            $"Holder: {holderName}  |  Balance: {balance:N3} OMR\n" +
+                                            "1) Check Balance\n" +
+                                            "2) Withdraw\n" +
+                                            "3) Deposit\n" +
+                                            "0) Back\n\n" +
+                                            "Select: "
+                                        );
+                                        atmTransOption = int.Parse(Console.ReadLine());
+                                        switch (atmTransOption)
+                                        {
+                                            case 1:
+                                                Console.WriteLine($"Current balance: {balance:N3} OMR");
+                                                break;
 
+                                            case 2:
+                                                Console.Write("Enter amount: ");
+                                                withdrawal = Convert.ToDouble(Console.ReadLine());
+                                                if (withdrawal > MAX_WITHDRAWAL)
+                                                {
+                                                    Console.WriteLine($"Rejected. Maximum withdrawal amount: {MAX_WITHDRAWAL}");
+                                                }
+                                                else if(withdrawal <= balance)
+                                                {
+                                                    balance -= withdrawal;
+                                                    Console.WriteLine($"Approved.   New balance: {balance:N3} OMR");
+                                                }
+                                                else if(balance > 0)
+                                                {
+                                                    Console.WriteLine($"Available balance {balance:N3}   OMR" +
+                                                        $"Insufficient for withdrawal!");
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("No funds.");
+                                                }
+                                                break;
+
+                                            case 3:
+                                                Console.Write("Enter amount: ");
+                                                deposit = Convert.ToDouble(Console.ReadLine());
+                                                balance += deposit;
+                                                Console.WriteLine($"New balance: {balance:N3} OMR");
+                                                break;
+
+                                            case 0:
+                                                Console.WriteLine("Returning to Loan Services...");
+                                                break;
+
+                                            default:
+                                                Console.WriteLine("Calculation not available.");
+                                                break;
+                                        }
+                                    }
+                                    break;
+
+                                case 2:
+                                    
+                                    break;
+
+                                case 3:
+                                    
+                                    break;
+
+                                case 0:
+                                    Console.WriteLine("Returning to Main Menu...");
+                                    break;
+
+                                default:
+                                    Console.WriteLine("Invalid selection. Please try again.");
+                                    break;
+                            }
+                        }
                         break;
 
                     case 4:
