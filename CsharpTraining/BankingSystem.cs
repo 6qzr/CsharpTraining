@@ -45,6 +45,8 @@ namespace CsharpTraining
             //varibles needed for Task 10
             const double VAT_RATE = 0.05, WIRE = 5.000, ATM_FEE = 0.500, POS = 0.000, ONLINE = 0.250;
 
+            //varibles needed for Task 13
+            const double USD = 2.597, EUR = 2.381, GBP = 2.052, EXCHANGE_FEE = 1.500;
 
             /*
              * ===========================================================
@@ -1026,9 +1028,196 @@ namespace CsharpTraining
                                     break;
 
                                 case 2:
-                              
-                                    break;
+                                    int tgtCurr = 1, tgtamount = 1;
+                                    double converted;
+                                    while (tgtCurr != 0)
+                                    {
+                                        Console.Write("\n=== CURRENCY EXCHANGE DESK ===\n\n" +
+                                            $"Account balance: {balance:N3} OMR\n" +
+                                            "--- Select Target Currency ---\n" +
+                                            "1) USD  2) EUR  3) GBP  0) Back\n" +
+                                            "Select currency: "
+                                        );
+                                        tgtCurr = int.Parse(Console.ReadLine());
+                                        
+                                        Console.Write("\n--- Select Amount ---\n\n" +
+                                            "1) Custom  2) 100 OMR  3) 500 OMR  4) 1000 OMR\n" +
+                                            "Select amount: "
+                                        );
+                                        tgtamount = int.Parse(Console.ReadLine());
+                                        switch (tgtCurr)
+                                        {
+                                            case 1: //USD
+                                                switch (tgtamount)
+                                                {
+                                                    case 1: //Custom
+                                                        Console.Write("\nEnter custom amount: ");
+                                                        int customAmount = int.Parse(Console.ReadLine());
+                                                        if (customAmount <= EXCHANGE_FEE)
+                                                        {
+                                                            Console.WriteLine("Amount too low to cover exchange fee.");
+                                                        }
+                                                        else
+                                                        {
+                                                            converted = (customAmount - EXCHANGE_FEE) * USD;
+                                                            balance -= customAmount;
+                                                            Console.WriteLine($"OMR Amount     :   {customAmount:N3}  OMR");
+                                                            Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                            Console.WriteLine($"Converted      :   {converted:N3}  USD");
+                                                            Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        }
+                                                        break;
 
+                                                    case 2: //100 OMR
+                                                        converted = (100 - EXCHANGE_FEE) * USD;
+                                                        balance -= 100;
+                                                        Console.WriteLine("OMR Amount      :   100.000  OMR");
+                                                        Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                        Console.WriteLine($"Converted      :   {converted:N3}  USD");
+                                                        Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        break;
+
+                                                    case 3: //500 OMR
+                                                        converted = (500 - EXCHANGE_FEE) * USD;
+                                                        balance -= 500;
+                                                        Console.WriteLine("OMR Amount      :   500.000  OMR");
+                                                        Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                        Console.WriteLine($"Converted      :   {converted:N3}  USD");
+                                                        Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        break;
+
+                                                    case 4: //1000 OMR
+                                                        converted = (1000 - EXCHANGE_FEE) * USD;
+                                                        balance -= 1000;
+                                                        Console.WriteLine("OMR Amount      :   1000.000  OMR");
+                                                        Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                        Console.WriteLine($"Converted      :   {converted:N3}  USD");
+                                                        Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        break;
+
+                                                    default:
+                                                        Console.WriteLine("Invalid Amount");
+                                                        break;
+                                                }
+                                                break;
+                                            case 2: //EUR
+                                                switch (tgtamount)
+                                                {
+                                                    case 1: //Custom
+                                                        Console.Write("\nEnter custom amount: ");
+                                                        int customAmount = int.Parse(Console.ReadLine());
+                                                        if (customAmount <= EXCHANGE_FEE)
+                                                        {
+                                                            Console.WriteLine("Amount too low to cover exchange fee.");
+                                                        }
+                                                        else
+                                                        {
+                                                            converted = (customAmount - EXCHANGE_FEE) * EUR;
+                                                            balance -= customAmount;
+                                                            Console.WriteLine($"OMR Amount     :   {customAmount:N3}  OMR");
+                                                            Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                            Console.WriteLine($"Converted      :   {converted:N3}  EUR");
+                                                            Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        }
+                                                        break;
+
+                                                    case 2: //100 OMR
+                                                        converted = (100 - EXCHANGE_FEE) * EUR;
+                                                        balance -= 100;
+                                                        Console.WriteLine("OMR Amount      :   100.000  OMR");
+                                                        Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                        Console.WriteLine($"Converted      :   {converted:N3}  EUR");
+                                                        Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        break;
+
+                                                    case 3: //500 OMR
+                                                        converted = (500 - EXCHANGE_FEE) * EUR;
+                                                        balance -= 500;
+                                                        Console.WriteLine("OMR Amount      :   500.000  OMR");
+                                                        Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                        Console.WriteLine($"Converted      :   {converted:N3}  EUR");
+                                                        Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        break;
+
+                                                    case 4: //1000 OMR
+                                                        converted = (1000 - EXCHANGE_FEE) * EUR;
+                                                        balance -= 1000;
+                                                        Console.WriteLine("OMR Amount      :   1000.000  OMR");
+                                                        Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                        Console.WriteLine($"Converted      :   {converted:N3}  EUR");
+                                                        Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        break;
+
+                                                    default:
+                                                        Console.WriteLine("Invalid Amount");
+                                                        break;
+                                                }
+                                                break;
+
+                                            case 3: //GBP
+                                                switch (tgtamount)
+                                                {
+                                                    case 1: //Custom
+                                                        Console.Write("\nEnter custom amount: ");
+                                                        int customAmount = int.Parse(Console.ReadLine());
+                                                        if (customAmount <= EXCHANGE_FEE)
+                                                        {
+                                                            Console.WriteLine("Amount too low to cover exchange fee.");
+                                                        }
+                                                        else
+                                                        {
+                                                            converted = (customAmount - EXCHANGE_FEE) * GBP;
+                                                            balance -= customAmount;
+                                                            Console.WriteLine($"OMR Amount     :   {customAmount:N3}  OMR");
+                                                            Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                            Console.WriteLine($"Converted      :   {converted:N3}  GBP");
+                                                            Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        }
+                                                        break;
+
+                                                    case 2: //100 OMR
+                                                        converted = (100 - EXCHANGE_FEE) * GBP;
+                                                        balance -= 100;
+                                                        Console.WriteLine("OMR Amount      :   100.000  OMR");
+                                                        Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                        Console.WriteLine($"Converted      :   {converted:N3}  GBP");
+                                                        Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        break;
+
+                                                    case 3: //500 OMR
+                                                        converted = (500 - EXCHANGE_FEE) * GBP;
+                                                        balance -= 500;
+                                                        Console.WriteLine("OMR Amount      :   500.000  OMR");
+                                                        Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                        Console.WriteLine($"Converted      :   {converted:N3}  GBP");
+                                                        Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        break;
+
+                                                    case 4: //1000 OMR
+                                                        converted = (1000 - EXCHANGE_FEE) * GBP;
+                                                        balance -= 1000;
+                                                        Console.WriteLine("OMR Amount      :   1000.000  OMR");
+                                                        Console.WriteLine($"Exchange Fee   :   {EXCHANGE_FEE:N3}  OMR");
+                                                        Console.WriteLine($"Converted      :   {converted:N3}  GBP");
+                                                        Console.WriteLine($"New balance    :   {balance:N3}  OMR");
+                                                        break;
+
+                                                    default:
+                                                        Console.WriteLine("Invalid Amount");
+                                                        break;
+                                                }
+                                                break;
+
+                                            case 0:
+                                                Console.WriteLine("Returning to Currency Exchange...");
+                                                break;
+
+                                            default:
+                                                Console.WriteLine("Invalid Currency");
+                                                break;
+                                        }
+                                    }
+                                    break;
                                 case 0:
                                     Console.WriteLine("Returning to Main Menu...");
                                     break;
