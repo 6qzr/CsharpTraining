@@ -792,7 +792,95 @@ namespace CsharpTraining
                                     break;
 
                                 case 3:
-                                    
+                                    int lpcOption = 1;
+                                    while (lpcOption != 0)
+                                    {
+                                        Console.Write("\n=== LOAN REPAYMENT CALCULATOR ===\n\n" +
+                                            $"Account balance (ref): {balance:N3} OMR" +
+                                            "1) Personal Loan\n" +
+                                            "2) Car Loan\n" +
+                                            "3) Home Loan\n" +
+                                            "0) Back\n\n" +
+                                            "Select: "
+                                        );
+                                        lpcOption = int.Parse(Console.ReadLine());
+                                        switch (lpcOption)
+                                        {
+                                            case 1:
+                                                Console.Write("Enter loan amount: ");
+                                                double loanAmount = Convert.ToDouble(Console.ReadLine());
+                                                Console.Write("Enter annual rate: ");
+                                                double rate = Convert.ToDouble(Console.ReadLine());
+                                                Console.Write("Enter term in months: ");
+                                                int months = Convert.ToInt32(Console.ReadLine());
+
+                                                double monthlyRate = rate / 12 / 100;
+                                                double monthlyPayment = loanAmount * monthlyRate / (1 - Math.Pow(1 + monthlyRate, -months));
+                                                double totalRepayable = monthlyPayment * months;
+                                                double totalInterest = totalRepayable - loanAmount;
+
+                                                Console.WriteLine($"Monthly payment : {monthlyPayment:N3} OMR\n" +
+                                                    $"Total repayable : {totalRepayable:N3} OMR\n" +
+                                                    $"Total interest  : {totalInterest:N3} OMR"
+                                                );
+
+                                                if (loanAmount > 10000)
+                                                    Console.WriteLine("Requires salary certificate.");
+                                                break;
+
+                                            case 2:
+                                                Console.Write("Enter loan amount: ");
+                                                loanAmount = Convert.ToDouble(Console.ReadLine());
+                                                Console.Write("Enter annual rate: ");
+                                                rate = Convert.ToDouble(Console.ReadLine());
+                                                Console.Write("Enter term in months: ");
+                                                months = Convert.ToInt32(Console.ReadLine());
+
+                                                monthlyRate = rate / 12 / 100;
+                                                monthlyPayment = loanAmount * monthlyRate / (1 - Math.Pow(1 + monthlyRate, -months));
+                                                totalRepayable = monthlyPayment * months;
+                                                totalInterest = totalRepayable - loanAmount;
+
+                                                Console.WriteLine($"Monthly payment : {monthlyPayment:N3} OMR\n" +
+                                                    $"Total repayable : {totalRepayable:N3} OMR\n" +
+                                                    $"Total interest  : {totalInterest:N3} OMR"
+                                                );
+
+                                                if (loanAmount > 30000)
+                                                    Console.WriteLine("Requires vehicle valuation.");
+                                                break;
+
+                                            case 3:
+                                                Console.Write("Enter loan amount: ");
+                                                loanAmount = Convert.ToDouble(Console.ReadLine());
+                                                Console.Write("Enter annual rate: ");
+                                                rate = Convert.ToDouble(Console.ReadLine());
+                                                Console.Write("Enter term in months: ");
+                                                months = Convert.ToInt32(Console.ReadLine());
+
+                                                monthlyRate = rate / 12 / 100;
+                                                monthlyPayment = loanAmount * monthlyRate / (1 - Math.Pow(1 + monthlyRate, -months));
+                                                totalRepayable = monthlyPayment * months;
+                                                totalInterest = totalRepayable - loanAmount;
+
+                                                Console.WriteLine($"Monthly payment : {monthlyPayment:N3} OMR\n" +
+                                                    $"Total repayable : {totalRepayable:N3} OMR\n" +
+                                                    $"Total interest  : {totalInterest:N3} OMR"
+                                                );
+
+                                                if (loanAmount > 100000)
+                                                    Console.WriteLine("Requires manager approval.");
+                                                break;
+
+                                            case 0:
+                                                Console.WriteLine("Returning to Loan Services...");
+                                                break;
+
+                                            default:
+                                                Console.WriteLine("Transaction type not listed. Standard fee: 2.000 OMR applies.");
+                                                break;
+                                        }
+                                    }
                                     break;
 
                                 case 0:
