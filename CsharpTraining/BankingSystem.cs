@@ -449,7 +449,94 @@ namespace CsharpTraining
                         break;
 
                     case 2:
+                        int accOption = 1;
+                        while (accOption != 0)
+                        {
+                            Console.Write("\n=== Account Management ===\n\n" +
+                                "1) Transaction Calculator\n" +
+                                "2) Account Types\n" +
+                                "3) Loan Eligibility\n" +
+                                "0) Back to Main Menu\n\n" +
+                                "Select: "
+                            );
+                            accOption = int.Parse(Console.ReadLine());
+                            switch (accOption)
+                            {
+                                case 1:
+                                    int transOption = 1;
+                                    while (transOption != 0)
+                                    {
+                                        Console.Write("\n=== TRANSACTION CALCULATOR ===\n\n" +
+                                            $"Using: balance={balance:N3}   deposit={deposit:N3}    rate={annualRate * 100:N1}%\n" +
+                                            "1) Balance After Deposit\n" +
+                                            "2) Balance After Withdrawal\n" +
+                                            "3) Annual Interest Earned\n" +
+                                            "4) Net Balance Change\n" +
+                                            "0) Back\n\n" +
+                                            "Select calculation: "
+                                        );
+                                        transOption = int.Parse(Console.ReadLine());
+                                        switch (transOption)
+                                        {
+                                            case 1:
+                                                balance = balance + deposit;
+                                                Console.WriteLine($"Balance after deposit: {balance:N3} OMR");
+                                                break;
 
+                                            case 2:
+                                                if (withdrawal < balance)
+                                                {
+                                                    balance = balance - withdrawal;
+                                                    Console.WriteLine($"Balance after withdrawal: {balance:N3} OMR");
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine("Insufficient amount!");
+                                                }
+                                                break;
+
+                                            case 3:
+                                                double interest = balance * annualRate;
+                                                Console.WriteLine($"Rate: {annualRate * 100:N1}%\n" +
+                                                    $"Interest amount: {interest:N3} OMR");
+                                                break;
+
+                                            case 4:
+                                                double net = deposit - withdrawal;
+                                                if (net > 0)
+                                                    Console.WriteLine("Surplus");
+                                                else
+                                                    Console.WriteLine("Deficit");
+                                                break;
+
+                                            case 0:
+                                                Console.WriteLine("Returning to Account Management...");
+                                                break;
+
+                                            default:
+                                                Console.WriteLine("Calculation not available.");
+                                                break;
+                                        }
+                                    }
+                                    break;
+
+                                case 2:
+
+                                    break;
+
+                                case 3:
+
+                                    break;
+
+                                case 0:
+                                    Console.WriteLine("Returning to Main Menu...");
+                                    break;
+
+                                default:
+                                    Console.WriteLine("Invalid selection. Please try again.");
+                                    break;
+                            }
+                        }
                         break;
 
                     case 3:
