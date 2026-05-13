@@ -521,7 +521,62 @@ namespace CsharpTraining
                                     break;
 
                                 case 2:
+                                    int accTypeOption = 1;
+                                    while (accTypeOption != 0)
+                                    {
+                                        Console.Write("\n=== ACCOUNT TYPES ===\n\n" +
+                                            $"Your account type: {accountType}\n" +
+                                            "1) (S) Savings Account\n" +
+                                            "2) (C) Current Account\n" +
+                                            "3) (F) Fixed Deposit\n" +
+                                            "4) Junior Account\n" +
+                                            "0) Back\n\n" +
+                                            "Select type: "
+                                        );
+                                        accTypeOption = int.Parse(Console.ReadLine());
+                                        switch (accTypeOption)
+                                        {
+                                            case 1:
+                                                Console.WriteLine("Savings Account | Min: 100.000 OMR | Fee: 1.000 OMR/month");
+                                                if (accountType.Equals('S'))
+                                                {
+                                                    Console.WriteLine("*** This is your account type ***");
+                                                }
+                                                Console.WriteLine("Can be opened at any branch.");
+                                                break;
 
+                                            case 2:
+                                                Console.WriteLine("Current Account | Min: 300.000 OMR | Fee: 3.000 OMR/month");
+                                                if (accountType.Equals('C'))
+                                                {
+                                                    Console.WriteLine("*** This is your account type ***");
+                                                }
+                                                Console.WriteLine("Can be opened at any branch.");
+                                                break;
+
+                                            case 3:
+                                                Console.WriteLine("Fixed Deposit | Min: 600.000 OMR | Fee: 4.500 OMR/month");
+                                                if (accountType.Equals('F'))
+                                                {
+                                                    Console.WriteLine("*** This is your account type ***");
+                                                }
+                                                Console.WriteLine("Requires manager approval");
+                                                break;
+
+                                            case 4:
+                                                Console.WriteLine("Junior Account | Min: 50.000 OMR | Fee: 0.100 OMR/month");
+                                                Console.WriteLine("Can be opened at any branch.");
+                                                break;
+
+                                            case 0:
+                                                Console.WriteLine("Returning to Account Management...");
+                                                break;
+
+                                            default:
+                                                Console.WriteLine("Account type not offered.");
+                                                break;
+                                        }
+                                    }
                                     break;
 
                                 case 3:
