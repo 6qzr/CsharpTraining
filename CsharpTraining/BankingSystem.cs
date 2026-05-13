@@ -796,7 +796,7 @@ namespace CsharpTraining
                                     while (lpcOption != 0)
                                     {
                                         Console.Write("\n=== LOAN REPAYMENT CALCULATOR ===\n\n" +
-                                            $"Account balance (ref): {balance:N3} OMR" +
+                                            $"Account balance (ref): {balance:N3} OMR\n" +
                                             "1) Personal Loan\n" +
                                             "2) Car Loan\n" +
                                             "3) Home Loan\n" +
@@ -895,7 +895,149 @@ namespace CsharpTraining
                         break;
 
                     case 4:
+                        int currExOption = 1;
+                        while (currExOption != 0)
+                        {
+                            Console.Write("\n=== Currency Exchange ===\n\n" +
+                                "1) Customer Tier\n" +
+                                "2) Exchange Currencies\n" +
+                                "0) Back to Main Menu\n\n" +
+                                "Select: "
+                            );
+                            currExOption = int.Parse(Console.ReadLine());
+                            switch (currExOption)
+                            {
+                                case 1:
+                                    int custmTierOption = 1;
+                                    string tier;
+                                    if (avgBalance >= 50000)
+                                    {
+                                        tier = "Platinum";
+                                    }
+                                    else if (avgBalance >= 10000)
+                                    {
+                                        tier = "Gold";
+                                    }
+                                    else if (avgBalance >= 1000)
+                                    {
+                                        tier = "Silver";
+                                    }
+                                    else
+                                    {
+                                        tier = "Standard";
+                                    }
+                                    while (custmTierOption != 0)
+                                    {
+                                        Console.Write("\n=== CUSTOMER TIER PORTAL ===\n\n" +
+                                            $"Avg Monthly Balance (from setup): {avgBalance:N3} OMR\n" +
+                                            $"***   {tier.ToUpper()} MEMBER   ***\n" +
+                                            "1) View Benefits\n" +
+                                            "2) Top-Up to Next Tier\n" +
+                                            "3) Fee Waiver Status\n" +
+                                            "0) Back\n\n" +
+                                            "Select option: "
+                                        );
+                                        custmTierOption = int.Parse(Console.ReadLine());
+                                        switch (custmTierOption)
+                                        {
+                                            case 1:
+                                                switch (tier)
+                                                {
+                                                    case "Platinum":
+                                                        Console.WriteLine("Platinum Benefits:\n" +
+                                                            "- Dedicated relationship manager\n" +
+                                                            "- Unlimited free transfers\n" +
+                                                            "- Priority customer support 24/7\n" +
+                                                            "- Free international card\n" +
+                                                            "- Highest exchange rate priority"
+                                                        );
+                                                        break;
+                                                    case "Gold":
+                                                        Console.WriteLine("Gold Benefits:\n" +
+                                                            "- 5 free transfers per month\n" +
+                                                            "- Discounted loan interest rates\n" +
+                                                            "- Priority branch service\n" +
+                                                            "- Free local card"
+                                                        );
+                                                        break;
+                                                    case "Silver":
+                                                        Console.WriteLine("Silver Benefits:\n" +
+                                                            "- 2 free transfers per month\n" +
+                                                            "- Reduced ATM fees\n" +
+                                                            "- Standard loan rates"
+                                                        );
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("Standard Benefits:\n" +
+                                                            "- Basic account access\n" +
+                                                            "- Standard ATM fees apply\n" +
+                                                            "- Standard loan rates"
+                                                        );
+                                                        break;
+                                                }
+                                                break;
 
+                                            case 2:
+                                                if (avgBalance >= 50000)
+                                                {
+                                                    Console.WriteLine("Top-Up Required: 0.000 OMR — already at highest tier");
+                                                }
+                                                else if (avgBalance >= 10000)
+                                                {
+                                                    Console.WriteLine($"Top-Up to Platinum: {50000 - avgBalance:N3} OMR");
+                                                }
+                                                else if (avgBalance >= 1000)
+                                                {
+                                                    Console.WriteLine($"Top-Up to Gold: {10000 - avgBalance:N3} OMR");
+                                                }
+                                                else
+                                                {
+                                                    Console.WriteLine($"Top-Up to Silver: {1000 - avgBalance:N3} OMR");
+                                                }
+                                                break;
+
+                                            case 3:
+                                                switch (tier)
+                                                {
+                                                    case "Platinum":
+                                                        Console.WriteLine("Fee Waiver Status: ALL fees waived.");
+                                                        break;
+                                                    case "Gold":
+                                                        Console.WriteLine("Fee Waiver Status: Transfer and ATM fees waived.");
+                                                        break;
+                                                    case "Silver":
+                                                        Console.WriteLine("Fee Waiver Status: ATM fees waived.");
+                                                        break;
+                                                    default:
+                                                        Console.WriteLine("Fee Waiver Status: No waivers — standard fees apply.");
+                                                        break;
+                                                }
+                                                break;
+
+                                            case 0:
+                                                Console.WriteLine("Returning to Currency Exchange...");
+                                                break;
+
+                                            default:
+                                                Console.WriteLine("Calculation not available.");
+                                                break;
+                                        }
+                                    }
+                                    break;
+
+                                case 2:
+                              
+                                    break;
+
+                                case 0:
+                                    Console.WriteLine("Returning to Main Menu...");
+                                    break;
+
+                                default:
+                                    Console.WriteLine("Invalid selection. Please try again.");
+                                    break;
+                            }
+                        }
                         break;
 
                     case 5:
