@@ -39,8 +39,11 @@ namespace CsharpTraining
             const string CORRECT_PIN = "4821"; 
             const int MAX_ATTEMPTS = 3;
 
-            //varibles needed for Task 9
+            //varible needed for Task 9
             const double MAX_WITHDRAWAL = 5000.000;
+
+            //varibles needed for Task 10
+            const double VAT_RATE = 0.05, WIRE = 5.000, ATM_FEE = 0.500, POS = 0.000, ONLINE = 0.250;
 
 
             /*
@@ -735,7 +738,57 @@ namespace CsharpTraining
                                     break;
 
                                 case 2:
-                                    
+                                    int transFeeOption = 1;
+                                    while (transFeeOption != 0)
+                                    {
+                                        Console.Write("\n=== TRANSACTION FEE SCHEDULE ===\n\n" +
+                                            "1) Wire Transfer\n" +
+                                            "2) ATM Withdrawal\n" +
+                                            "3) POS Payment\n" +
+                                            "4) Online Transfer\n" +
+                                            "0) Back\n\n" +
+                                            "Select: "
+                                        );
+                                        transFeeOption = int.Parse(Console.ReadLine());
+                                        switch (transFeeOption)
+                                        {
+                                            case 1:
+                                                double vat = WIRE * VAT_RATE;
+                                                Console.WriteLine($"Base fee    :   {WIRE:N3} OMR\n" +
+                                                    $"VAT (5%)  :   {vat:N3}    OMR\n" +
+                                                    $"Total :   {WIRE + vat:N3}\n");
+                                                break;
+
+                                            case 2:
+                                                vat = ATM_FEE * VAT_RATE;
+                                                Console.WriteLine($"Base fee    :   {ATM_FEE:N3} OMR\n" +
+                                                    $"VAT (5%)  :   {vat:N3}    OMR\n" +
+                                                    $"Total :   {ATM_FEE + vat:N3}\n");
+                                                break;
+
+                                            case 3:
+                                                vat = POS * VAT_RATE;
+                                                Console.WriteLine($"Base fee    :   {POS:N3} OMR\n" +
+                                                    $"VAT (5%)  :   {vat:N3}    OMR\n" +
+                                                    $"Total :   {POS + vat:N3}\n");
+                                                break;
+
+                                            case 4:
+                                                vat = ONLINE * VAT_RATE;
+                                                Console.WriteLine($"Base fee    :   {ONLINE:N3} OMR\n" +
+                                                    $"VAT (5%)  :   {vat:N3}    OMR\n" +
+                                                    $"Total :   {ONLINE + vat:N3}\n");
+                                                break;
+
+                                            case 0:
+                                                Console.WriteLine("Returning to Loan Services...");
+                                                break;
+
+                                            default:
+                                                Console.WriteLine("Transaction type not listed. Standard fee: 2.000 OMR applies.");
+                                                break;
+                                        }
+                                    }
                                     break;
 
                                 case 3:
