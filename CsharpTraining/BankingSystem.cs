@@ -1,4 +1,5 @@
 ﻿using System.Security.Principal;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CsharpTraining
 {
@@ -580,7 +581,69 @@ namespace CsharpTraining
                                     break;
 
                                 case 3:
+                                    int loanOption = 1;
+                                    while (loanOption != 0)
+                                    {
+                                        Console.Write("\n=== LOAN ELIGIBILITY ===\n\n" +
+                                            $"Holder: {holderName}  |  Salary: {salary}  |  Score: {creditScore}  |  Age: {age}\n" +
+                                            "1) Personal Loan\n" +
+                                            "2) Car Loan\n" +
+                                            "3) Home Loan\n" +
+                                            "0) Back\n\n" +
+                                            "Select type: "
+                                        );
+                                        loanOption = int.Parse(Console.ReadLine());
+                                        switch (loanOption)
+                                        {
+                                            case 1:
+                                                if (isEmployed && salary >= 400 && creditScore > 650)
+                                                {
+                                                    Console.WriteLine("Eligible — application accepted.");
+                                                }
+                                                else
+                                                {
+                                                    if (!isEmployed) Console.WriteLine("Not eligible: must be employed.");
+                                                    if (salary < 400) Console.WriteLine("Not eligible: salary below 400 OMR.");
+                                                    if (creditScore <= 650) Console.WriteLine("Not eligible: credit score below 650.");
+                                                }
+                                                break;
 
+                                            case 2:
+                                                if (isEmployed && salary >= 600 && age >= 21)
+                                                {
+                                                    Console.WriteLine("Eligible — application accepted.");
+                                                }
+                                                else
+                                                {
+                                                    if (!isEmployed) Console.WriteLine("Not eligible: must be employed.");
+                                                    if (salary < 600) Console.WriteLine("Not eligible: salary below 600 OMR.");
+                                                    if (age < 21) Console.WriteLine("Not eligible: age below 21.");
+                                                }
+                                                break;
+
+                                            case 3:
+                                                if (isEmployed && salary >= 1000 && creditScore > 700 && age >= 25)
+                                                {
+                                                    Console.WriteLine("Eligible — application accepted.");
+                                                }
+                                                else
+                                                {
+                                                    if (!isEmployed) Console.WriteLine("Not eligible: must be employed.");
+                                                    if (salary < 1000) Console.WriteLine("Not eligible: salary below 1000 OMR.");
+                                                    if (creditScore <= 700) Console.WriteLine("Not eligible: credit score below 700.");
+                                                    if (age < 25) Console.WriteLine("Not eligible: age below 25.");
+                                                }
+                                                break;
+                                            
+                                            case 0:
+                                                Console.WriteLine("Returning to Account Management...");
+                                                break;
+
+                                            default:
+                                                Console.WriteLine("Loan product not offered.");
+                                                break;
+                                        }
+                                    }
                                     break;
 
                                 case 0:
