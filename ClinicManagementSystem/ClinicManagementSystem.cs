@@ -1,4 +1,6 @@
-﻿namespace ClinicManagementSystem
+﻿using System.Numerics;
+
+namespace ClinicManagementSystem
 {
     internal class ClinicManagementSystem
     {
@@ -101,31 +103,24 @@
 
                                     Console.Write("Enter patient phone: ");
                                     string phone = Console.ReadLine();
-
-                                    if(patientCount < MAX_PATIENTS)
+                                   
+                                    if (!p1Active)
                                     {
-                                        if (!p1Active)
-                                        {
-                                            p1Name = name; p1Age = age; p1Phone = phone; p1Active = true;
-                                            patientCount++;
-                                            Console.WriteLine("Patient added successfully.");
-                                        }
-                                        else if (!p2Active)
-                                        {
-                                            p2Name = name; p2Age = age; p2Phone = phone; p2Active = true;
-                                            patientCount++;
-                                            Console.WriteLine("Patient added successfully.");
-                                        }
-                                        else if (!p3Active)
-                                        {
-                                            p3Name = name; p3Age = age; p3Phone = phone; p3Active = true;
-                                            patientCount++;
-                                            Console.WriteLine("Patient added successfully.");
-                                        }
+                                        p1Name = name; p1Age = age; p1Phone = phone; p1Active = true;
+                                        patientCount++;
+                                        Console.WriteLine("Patient added successfully.");
                                     }
-                                    else
+                                    else if (!p2Active)
                                     {
-                                        Console.WriteLine("Max patient Reached. No slots available");
+                                        p2Name = name; p2Age = age; p2Phone = phone; p2Active = true;
+                                        patientCount++;
+                                        Console.WriteLine("Patient added successfully.");
+                                    }
+                                    else if (!p3Active)
+                                    {
+                                        p3Name = name; p3Age = age; p3Phone = phone; p3Active = true;
+                                        patientCount++;
+                                        Console.WriteLine("Patient added successfully.");
                                     }
                                     break;
 
@@ -163,6 +158,7 @@
                                     }
                                     break;
 
+                                //✏️ UPDATE Patient Phone
                                 case 3:
                                     Console.Write("Enter patient name: ");
                                     name = Console.ReadLine();
@@ -193,7 +189,13 @@
                                     }
                                     break;
 
+                                //🗑️ DELETE Patient
                                 case 4:
+                                    if (patientCount == 0)
+                                    {
+                                        Console.WriteLine("No patients registered.");
+                                        break;
+                                    }
                                     Console.Write("Enter patient name: ");
                                     name = Console.ReadLine();
                                     if (p1Active && p1Name == name)
@@ -232,6 +234,170 @@
                                 case 0:
                                     Console.WriteLine("Exiting to Main Menu...");
                                     pFlag = false;
+                                    break;
+
+                                default:
+                                    Console.WriteLine("Invalid choice!");
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case 2:
+                        bool dFlag = true;
+                        int dChoice;
+                        while (dFlag)
+                        {
+                            Console.Write
+                            ("╔══════════════════════════════════════╗\n" +
+                             "║          DOCTOR MANAGEMENT           ║\n" +
+                             "╠══════════════════════════════════════╣\n" +
+                             "║ 1. Add New Doctor                    ║\n" +
+                             "║ 2. Display All Doctors               ║\n" +
+                             "║ 3. Update Consultation Fee           ║\n" +
+                             "║ 4. Delete Doctor                     ║\n" +
+                             "║ 0. Back to Main Menu                 ║\n" +
+                             "╚══════════════════════════════════════╝\n\n" +
+                             "Enter your choice: "
+                            );
+
+                            dChoice = Convert.ToInt32(Console.ReadLine());
+
+                            switch (dChoice)
+                            {
+            // ── Doctor Operations ─────────────────────────────────────
+                                //➕ ADD Doctor
+                                case 1:
+                                    if (doctorCount == MAX_DOCTORS)
+                                    {
+                                        Console.WriteLine("No available doctor slots.");
+                                        break;
+                                    }
+
+                                    Console.Write("Enter doctor name: ");
+                                    string name = Console.ReadLine();
+                                    if (name == "")
+                                    {
+                                        Console.WriteLine("Empty name not accepted.");
+                                        break;
+                                    }
+
+                                    Console.Write("Enter doctor specialization: ");
+                                    string spec = Console.ReadLine();
+                                    if (spec == "")
+                                    {
+                                        Console.WriteLine("Empty specialization not accepted.");
+                                        break;
+                                    }
+
+                                    Console.Write("Enter doctor fee: ");
+                                    double fee = Convert.ToDouble(Console.ReadLine());
+                                    if (fee < 0)
+                                    {
+                                        Console.WriteLine("Invalid fee amount!");
+                                        break;
+                                    }
+
+                                    if (!d1Active)
+                                    {
+                                        d1Name = name; d1Spec = spec; d1Fee = fee;  d1Active = true;
+                                        doctorCount++;
+                                        Console.WriteLine("Doctor added successfully.");
+                                    }
+                                    else if (!d2Active)
+                                    {
+                                        d2Name = name; d2Spec = spec; d2Fee = fee; d2Active = true;
+                                        doctorCount++;
+                                        Console.WriteLine("Doctor added successfully.");
+                                    }
+                                    break;
+
+                                //📋 DISPLAY ALL Doctors
+                                case 2:
+                                    if (doctorCount == 0)
+                                    {
+                                        Console.WriteLine("No doctors registered.");
+                                        break;
+                                    }
+                                    int displayNum = 1;
+                                    if (d1Active)
+                                    {
+                                        Console.WriteLine($"\nDoctor #{displayNum}\n\n" +
+                                            $"Doctor name: {d1Name}\n" +
+                                            $"Doctor specialization: {d1Spec}\n" +
+                                            $"Fee: {d1Fee}\n");
+                                        displayNum++;
+                                    }
+                                    if (d2Active)
+                                    {
+                                        Console.WriteLine($"\nDoctor #{displayNum}\n\n" +
+                                            $"Doctor name: {d2Name}\n" +
+                                            $"Doctor specialization: {d2Spec}\n" +
+                                            $"Fee: {d2Fee}\n");
+                                        displayNum++;
+                                    }
+                                    break;
+
+                                //✏️ UPDATE Consultation Fee
+                                case 3:
+                                    Console.Write("Enter doctor name: ");
+                                    name = Console.ReadLine();
+                                    if (d1Active && d1Name == name)
+                                    {
+                                        Console.Write("Enter doctor fee: ");
+                                        fee = Convert.ToDouble(Console.ReadLine());
+                                        d1Fee = fee;
+                                        Console.WriteLine("Fee updated.");
+                                    }
+                                    else if (d2Active && d2Name == name)
+                                    {
+                                        Console.Write("Enter doctor fee: ");
+                                        fee = Convert.ToDouble(Console.ReadLine());
+                                        d2Fee = fee;
+                                        Console.WriteLine("Fee updated.");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Doctor not found.");
+                                    }
+                                    break;
+
+                                //🗑️ DELETE Doctor
+                                case 4:
+                                    if (doctorCount == 0)
+                                    {
+                                        Console.WriteLine("No doctors registered.");
+                                        break;
+                                    }
+                                    Console.Write("Enter doctor name: ");
+                                    name = Console.ReadLine();
+                                    if (d1Active && d1Name == name)
+                                    {
+                                        d1Active = false;
+                                        d1Name = "";
+                                        d1Spec = "";
+                                        d1Fee = 0;
+                                        doctorCount--;
+                                        Console.WriteLine("Doctor removed.");
+                                    }
+                                    else if (d2Active && d2Name == name)
+                                    {
+                                        d2Active = false;
+                                        d2Name = "";
+                                        d2Spec = "";
+                                        d2Fee = 0;
+                                        doctorCount--;
+                                        Console.WriteLine("Doctor removed.");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Doctor not found.");
+                                    }
+                                    break;
+
+                                case 0:
+                                    Console.WriteLine("Exiting to Main Menu...");
+                                    dFlag = false;
                                     break;
 
                                 default:
