@@ -1,6 +1,7 @@
 ﻿using System.Net.NetworkInformation;
 using System.Numerics;
 using System.Threading.Channels;
+using System.Xml.Linq;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ClinicManagementSystem
@@ -584,17 +585,197 @@ namespace ClinicManagementSystem
 
                                 //📋 DISPLAY ALL Appointments
                                 case 2:
-
+                                    if(appointmentCount == 0)
+                                    {
+                                        Console.WriteLine("No appointments booked.");
+                                        break;
+                                    }
+                                    Console.WriteLine("─────────────────────────────────────────────────\r\nAPPOINTMENTS\r\n─────────────────────────────────────────────────");
+                                    int appCount = 1;
+                                    if (a1Active)
+                                    {
+                                        Console.WriteLine($"\n---- Appointment #{appCount} ----\n" +
+                                            $"Patient: {a1Patient}\n" +
+                                            $"Doctor: {a1Doctor}\n" +
+                                            $"Date: {a1Date}\n" +
+                                            $"Status: {a1Status}\n" +
+                                            $"─────────────────────────────────────────────────\r");
+                                        appCount++;
+                                    }
+                                    else if (a2Active)
+                                    {
+                                        Console.WriteLine($"\n---- Appointment #{appCount} ----\n" +
+                                            $"Patient   : {a2Patient}\n" +
+                                            $"Doctor    : {a2Doctor}\n" +
+                                            $"Date      : {a2Date}\n" +
+                                            $"Status    : {a2Status}" +
+                                            $"─────────────────────────────────────────────────\r");
+                                        appCount++;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"\n---- Appointment #{appCount} ----\n" +
+                                            $"Patient: {a3Patient}\n" +
+                                            $"Doctor: {a3Doctor}\n" +
+                                            $"Date: {a3Date}\n" +
+                                            $"Status: {a3Status}" +
+                                            $"─────────────────────────────────────────────────\r");
+                                    }
                                     break;
 
                                 //✏️ UPDATE Appointment Status
                                 case 3:
+                                    if (appointmentCount == 0)
+                                    {
+                                        Console.WriteLine("No active booked.");
+                                        break;
+                                    }
+                                    if (a1Active)
+                                    {
+                                        Console.WriteLine($"\n---- Appointment NO.1 ----\n" +
+                                            $"Patient: {a1Patient}\n" +
+                                            $"Doctor: {a1Doctor}\n" +
+                                            $"Date: {a1Date}\n" +
+                                            $"Status: {a1Status}");
+                                    }
+                                    else if (a2Active)
+                                    {
+                                        Console.WriteLine($"\n---- Appointment NO.2 ----\n" +
+                                            $"Patient: {a2Patient}\n" +
+                                            $"Doctor: {a2Doctor}\n" +
+                                            $"Date: {a2Date}\n" +
+                                            $"Status: {a2Status}");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine($"\n---- Appointment NO.3 ----\n" +
+                                            $"Patient: {a3Patient}\n" +
+                                            $"Doctor: {a3Doctor}\n" +
+                                            $"Date: {a3Date}\n" +
+                                            $"Status: {a3Status}");
+                                    }
+                                    Console.Write("Enter the appointment number: ");
+                                    int appNo = Convert.ToInt32(Console.ReadLine());
+                                    
+                                    switch (appNo)
+                                    {
+                                        case 1:
+                                            Console.WriteLine("\nStatus options: 1. Scheduled 2. Completed 3. Cancelled");
+                                            Console.Write("Enter status choice: ");
+                                            int sChoice = Convert.ToInt32(Console.ReadLine());
+                                            switch (sChoice)
+                                            {
+                                                case 1:
+                                                    a1Status = "Scheduled";
+                                                    Console.WriteLine("Appointment status updated to Scheduled.");
+                                                    break;
 
+                                                case 2:
+                                                    a1Status = "Completed";
+                                                    Console.WriteLine("Appointment status updated to Completed.");
+                                                    break;
+
+                                                case 3:
+                                                    a1Status = "Cancelled";
+                                                    Console.WriteLine("Appointment status updated to cancelled.");
+                                                    break;
+
+                                                default:
+                                                    Console.WriteLine("Invalid choice.");
+                                                    break;
+                                            }
+                                            break;
+
+                                        case 2:
+                                            Console.WriteLine("\nStatus options: 1. Scheduled 2. Completed 3. Cancelled");
+                                            Console.Write("Enter status choice: ");
+                                            sChoice = Convert.ToInt32(Console.ReadLine());
+                                            switch (sChoice)
+                                            {
+                                                case 1:
+                                                    a2Status = "Scheduled";
+                                                    Console.WriteLine("Appointment status updated to Scheduled.");
+                                                    break;
+
+                                                case 2:
+                                                    a2Status = "Completed";
+                                                    Console.WriteLine("Appointment status updated to Completed.");
+                                                    break;
+
+                                                case 3:
+                                                    a2Status = "Cancelled";
+                                                    Console.WriteLine("Appointment status updated to cancelled.");
+                                                    break;
+
+                                                default:
+                                                    Console.WriteLine("Invalid choice.");
+                                                    break;
+                                            }
+                                            break;
+
+                                        case 3:
+                                            Console.WriteLine("\nStatus options: 1. Scheduled 2. Completed 3. Cancelled");
+                                            Console.Write("Enter status choice: ");
+                                            sChoice = Convert.ToInt32(Console.ReadLine());
+                                            switch (sChoice)
+                                            {
+                                                case 1:
+                                                    a3Status = "Scheduled";
+                                                    Console.WriteLine("Appointment status updated to Scheduled.");
+                                                    break;
+
+                                                case 2:
+                                                    a3Status = "Completed";
+                                                    Console.WriteLine("Appointment status updated to Completed.");
+                                                    break;
+
+                                                case 3:
+                                                    a3Status = "Cancelled";
+                                                    Console.WriteLine("Appointment status updated to cancelled.");
+                                                    break;
+
+                                                default:
+                                                    Console.WriteLine("Invalid choice.");
+                                                    break;
+                                            }
+                                            break;
+
+                                        default:
+                                            Console.WriteLine("Invalid slot.");
+                                            break;
+                                    }
                                     break;
 
                                 //🗑️ CANCEL Appointment
                                 case 4:
-
+                                    if (appointmentCount == 0)
+                                    {
+                                        Console.WriteLine("No appointment booked");
+                                        break;
+                                    }
+                                    Console.Write("Enter patient name: ");
+                                    string name = Console.ReadLine();
+                                    Console.Write("Enter appointment date (format DD/MM/YYYY): ");
+                                    date = Console.ReadLine();
+                                    if (a1Active && a1Patient == name && a1Date == date)
+                                    {
+                                        a1Status = "Cancelled";
+                                        Console.WriteLine("Appointment status updated to cancelled.");
+                                    }
+                                    else if (a2Active && a2Patient == name && a2Date == date)
+                                    {
+                                        a2Status = "Cancelled";
+                                        Console.WriteLine("Appointment status updated to cancelled.");
+                                    }
+                                    else if (a3Active && a3Patient == name && a3Date == date)
+                                    {
+                                        a3Status = "Cancelled";
+                                        Console.WriteLine("Appointment status updated to cancelled.");
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Appointment not found.");
+                                    }
                                     break;
 
                                 case 0:
