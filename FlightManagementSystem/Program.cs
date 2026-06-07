@@ -1,13 +1,11 @@
-﻿using System.Xml.Linq;
-
-namespace MiniFlightManagementSystem
+﻿namespace FlightManagementSystem
 {
     internal class Program
     {
-
+        
         /*
-         * Stored Data
-         */
+        * Stored Data
+        */
 
         // 5 passenger names
         static List<string> passengerNames = new List<string> { "Mohammed", "Omar", "Khalid", "Salim", "Naif" };
@@ -154,7 +152,7 @@ namespace MiniFlightManagementSystem
             passengerNames.Add(passengerFullName);
             ticketNumbers.Add(newTicket);
 
-            Console.ForegroundColor= ConsoleColor.White;
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"\n  Passenger: {passengerFullName}");
             Console.WriteLine($"  Ticket:    {newTicket}");
             Console.ResetColor();
@@ -171,7 +169,7 @@ namespace MiniFlightManagementSystem
             Console.WriteLine("========================================\r\nView All Passengers\r\n========================================");
             Console.ResetColor();
 
-            if (passengerNames.Count == 0) 
+            if (passengerNames.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\n  No passengers registered yet. Press Enter.");
@@ -182,7 +180,7 @@ namespace MiniFlightManagementSystem
 
             Console.WriteLine($"\n{"No.",-5} {"Passenger Name",-20} {"Ticket ID",-12} {"Status"}");
             Console.WriteLine(new string('-', 46));
-            
+
             for (int i = 0; i < passengerNames.Count; i++)
             {
                 string status = cancelledTickets.Contains(ticketNumbers[i]) ? "Cancelled" : "Active";
@@ -230,7 +228,7 @@ namespace MiniFlightManagementSystem
 
             return ticketID;
         }
-        
+
         static int GetAvailableFlights()
         {
             // Available flights
@@ -302,7 +300,7 @@ namespace MiniFlightManagementSystem
 
             return dateNo;
         }
-        
+
         static void BookFlightTicket()
         {
             Console.Clear();
@@ -336,7 +334,7 @@ namespace MiniFlightManagementSystem
             bookingRecord[ticketID] = $"{flight}|{date}";
 
             int passengerIndex = ticketNumbers.IndexOf(ticketID);
-            
+
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\n--- Booking Confirmation ---");
             Console.WriteLine($"Ticket ID     : {ticketID}");
@@ -399,7 +397,7 @@ namespace MiniFlightManagementSystem
 
             string ticketID = GetTicketID();
             if (ticketID == "") return;
-            
+
             if (!bookingRecord.ContainsKey(ticketID))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
@@ -525,7 +523,7 @@ namespace MiniFlightManagementSystem
                         Console.ReadLine();
                         return;
                     }
-                    
+
                     // Update booking record
                     bookingRecord[ticketID] = $"{newFlight}|{newDate}";
 
@@ -751,7 +749,7 @@ namespace MiniFlightManagementSystem
                         Console.ReadLine();
                         return;
                     }
-                    
+
                     passenger = checkedInQueue.Dequeue();
 
                     Console.ForegroundColor = ConsoleColor.White;
@@ -764,7 +762,7 @@ namespace MiniFlightManagementSystem
                     }
                     Console.ReadLine();
                     break;
-                
+
                 case "0":
                     return;
 
@@ -797,7 +795,7 @@ namespace MiniFlightManagementSystem
             switch (Console.ReadLine())
             {
                 case "1":
-                    if (checkedInQueue.Count == 0 && boardingStack.Count != 0 )
+                    if (checkedInQueue.Count == 0 && boardingStack.Count != 0)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("\n  Warning: Checked-In queue is empty and boarding stack has passengers. Press Enter.");
@@ -813,7 +811,7 @@ namespace MiniFlightManagementSystem
                         Console.ReadLine();
                         return;
                     }
-                    
+
                     if (checkedInQueue.Count != 0)
                     {
                         int loaded = checkedInQueue.Count;
