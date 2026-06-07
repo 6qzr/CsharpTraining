@@ -67,7 +67,11 @@ namespace MiniFlightManagementSystem
                     case "1":
                         RegisterNewPassenger();
                         break;
-                    
+
+                    case "2":
+                        ViewAllPassengers();
+                        break;
+
                     case "0":
                         return;
 
@@ -128,6 +132,37 @@ namespace MiniFlightManagementSystem
             Console.ForegroundColor= ConsoleColor.White;
             Console.WriteLine($"  Passenger: {passengerFullName}");
             Console.WriteLine($"  Ticket:    {newTicket}");
+            Console.ReadLine();
+        }
+
+        static void ViewAllPassengers()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========================================\r\nView All Passengers\r\n========================================");
+            Console.ResetColor();
+
+            if (passengerNames.Count == 0) 
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  No passengers registered yet. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
+            Console.WriteLine($"\n{"No.",-5} {"Passenger Name",-20} {"Ticket ID",-12} {"Status"}");
+            Console.WriteLine(new string('-', 46));
+            
+            for (int i = 0; i < passengerNames.Count; i++)
+            {
+                string status = cancelledTickets.Contains(ticketNumbers[i]) ? "Cancelled" : "Active";
+                Console.WriteLine($"{i + 1,-5} {passengerNames[i],-20} {ticketNumbers[i],-12} {status}");
+            }
+
+            Console.WriteLine(new string('-', 46));
+            Console.WriteLine($"Total Passengers: {passengerNames.Count}");
+
             Console.ReadLine();
         }
     }
