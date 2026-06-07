@@ -84,8 +84,11 @@ namespace MiniFlightManagementSystem
                         UpdateBooking();
                         break;
 
-                    case "0":
+                    case "6":
                         CancelTicket();
+                        break;
+
+                    case "0":
                         return;
 
                     default:
