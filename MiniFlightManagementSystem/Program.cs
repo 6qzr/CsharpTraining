@@ -39,7 +39,40 @@
 
         static void Main(string[] args)
         {
-            
+            while (true)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("========================================\r\nSKY WINGS FLIGHT MANAGEMENT SYSTEM\r\n========================================");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("1. Register New Passenger\r\n2. View All Passengers\r\n3. Book a Flight Ticket\r\n4. View Booking Details");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("5. Update a Booking\r\n6. Cancel a Ticket\r\n7. Passenger Check-In\r\n8. Board Passengers (Boarding Stack)");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("9. Generate Flight Manifest\r\n10. Manage Waitlist & Seat Assignment");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine("0. Exit");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("========================================\r\nEnter your choice: ");
+                Console.ResetColor();
+
+                switch (Console.ReadLine())
+                {
+                    case "0":
+                        return;
+
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Invalid option. Press Enter to try again.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        break;
+                }
+            }
         }
     }
 }
