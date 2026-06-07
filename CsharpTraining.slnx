@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="ClinicManagementSystem/ClinicManagementSystem.csproj" Id="ddec33d1-390b-4e81-9988-6c539329fa23" />
   <Project Path="CsharpTraining/Day2-Assignment.csproj" />
+  <Project Path="MiniFlightManagementSystem/MiniFlightManagementSystem.csproj" Id="b8710be1-ea8c-4df1-a4ef-c9ee90cace96" />
 </Solution>
