@@ -72,6 +72,10 @@ namespace MiniFlightManagementSystem
                         ViewAllPassengers();
                         break;
 
+                    case "3":
+                        BookFlightTicket();
+                        break;
+
                     case "0":
                         return;
 
@@ -126,12 +130,13 @@ namespace MiniFlightManagementSystem
             passengerNames.Add(passengerFullName);
             ticketNumbers.Add(newTicket);
 
+            Console.ForegroundColor= ConsoleColor.White;
+            Console.WriteLine($"\n  Passenger: {passengerFullName}");
+            Console.WriteLine($"  Ticket:    {newTicket}");
+            Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"\n  Passenger and Ticket added successfully. Press Enter");
             Console.ResetColor();
-            Console.ForegroundColor= ConsoleColor.White;
-            Console.WriteLine($"  Passenger: {passengerFullName}");
-            Console.WriteLine($"  Ticket:    {newTicket}");
             Console.ReadLine();
         }
 
@@ -163,6 +168,136 @@ namespace MiniFlightManagementSystem
             Console.WriteLine(new string('-', 46));
             Console.WriteLine($"Total Passengers: {passengerNames.Count}");
 
+            Console.ReadLine();
+        }
+
+        static void BookFlightTicket()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========================================\r\nBook A Flight Ticket\r\n========================================");
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("\nEnter Ticket ID: ");
+            Console.ResetColor();
+
+            string ticketID = Console.ReadLine().Trim().ToUpper();
+
+            if (string.IsNullOrEmpty(ticketID))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Error Empty Ticket ID. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+            else if (!ticketNumbers.Contains(ticketID))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Error: Ticket ID does not exist. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+            else if (cancelledTickets.Contains(ticketID))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Cannot book with a cancelled ticket. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+            else if (bookingRecord.ContainsKey(ticketID))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n   Ticket already has a booking. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
+            // Available flights
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\nAvailable Flights:");
+            for (int i = 0; i < flightNumbers.Length; i++)
+            {
+                Console.WriteLine($"[{i + 1}] {flightNumbers[i]}");
+            }
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("\nEnter the index of Flight Number: ");
+            Console.ResetColor();
+
+            if (!int.TryParse(Console.ReadLine().Trim(), out int flightNo)) 
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Error: Should enter an integer. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+            
+            if (flightNo < 0 || flightNo > flightNumbers.Length)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Error: Flight index out of range. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
+            // Available dates
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\nAvailable Dates:");
+            for (int i = 0; i < availableDates.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}] {availableDates[i]}");
+            }
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("\nEnter the index of flight Date: ");
+            Console.ResetColor();
+
+            if (!int.TryParse(Console.ReadLine().Trim(), out int dateNo))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Error: Should enter an integer. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
+            if (dateNo < 0 || dateNo > availableDates.Count)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Error: Flight date index out of range. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
+            // available flights and dates started from index 1 -> decrease by 1
+            string flight = flightNumbers[flightNo - 1];
+            string date = availableDates[dateNo - 1];
+
+            // Store ate bookingRecord
+            bookingRecord[ticketID] = $"{flight}|{date}";
+
+            int passengerIndex = ticketNumbers.IndexOf(ticketID);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n--- Booking Confirmation ---");
+            Console.WriteLine($"Ticket ID     : {ticketID}");
+            Console.WriteLine($"Passenger     : {passengerNames[passengerIndex]}");
+            Console.WriteLine($"Flight        : {flight}");
+            Console.WriteLine($"Date          : {date}");
+            Console.WriteLine("----------------------------");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\n  Flight booked successfully. Press Enter");
+            Console.ResetColor();
             Console.ReadLine();
         }
     }
