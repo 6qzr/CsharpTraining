@@ -80,6 +80,10 @@ namespace MiniFlightManagementSystem
                         ViewBookingDetails();
                         break;
 
+                    case "5":
+                        UpdateBooking();
+                        break;
+
                     case "0":
                         return;
 
@@ -175,13 +179,8 @@ namespace MiniFlightManagementSystem
             Console.ReadLine();
         }
 
-        static void BookFlightTicket()
+        static string GetTicketID()
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("========================================\r\nBook A Flight Ticket\r\n========================================");
-            Console.ResetColor();
-
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("\nEnter Ticket ID: ");
             Console.ResetColor();
@@ -194,7 +193,7 @@ namespace MiniFlightManagementSystem
                 Console.WriteLine("\n  Error Empty Ticket ID. Press Enter.");
                 Console.ResetColor();
                 Console.ReadLine();
-                return;
+                return "";
             }
             else if (!ticketNumbers.Contains(ticketID))
             {
@@ -202,7 +201,7 @@ namespace MiniFlightManagementSystem
                 Console.WriteLine("\n  Error: Ticket ID does not exist. Press Enter.");
                 Console.ResetColor();
                 Console.ReadLine();
-                return;
+                return "";
             }
             else if (cancelledTickets.Contains(ticketID))
             {
@@ -210,17 +209,14 @@ namespace MiniFlightManagementSystem
                 Console.WriteLine("\n  Cannot book with a cancelled ticket. Press Enter.");
                 Console.ResetColor();
                 Console.ReadLine();
-                return;
-            }
-            else if (bookingRecord.ContainsKey(ticketID))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n  Ticket already has a booking. Press Enter.");
-                Console.ResetColor();
-                Console.ReadLine();
-                return;
+                return "";
             }
 
+            return ticketID;
+        }
+        
+        static int GetAvailableFlights()
+        {
             // Available flights
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\nAvailable Flights:");
@@ -234,24 +230,29 @@ namespace MiniFlightManagementSystem
             Console.Write("\nEnter the index of Flight Number: ");
             Console.ResetColor();
 
-            if (!int.TryParse(Console.ReadLine().Trim(), out int flightNo)) 
+            if (!int.TryParse(Console.ReadLine().Trim(), out int flightNo))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\n  Error: Should enter an integer. Press Enter.");
                 Console.ResetColor();
                 Console.ReadLine();
-                return;
+                return 0;
             }
-            
-            if (flightNo < 0 || flightNo > flightNumbers.Length)
+
+            if (flightNo <= 0 || flightNo > flightNumbers.Length)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\n  Error: Flight index out of range. Press Enter.");
                 Console.ResetColor();
                 Console.ReadLine();
-                return;
+                return 0;
             }
 
+            return flightNo;
+        }
+
+        static int GetAvailableDates()
+        {
             // Available dates
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("\nAvailable Dates:");
@@ -271,17 +272,45 @@ namespace MiniFlightManagementSystem
                 Console.WriteLine("\n  Error: Should enter an integer. Press Enter.");
                 Console.ResetColor();
                 Console.ReadLine();
-                return;
+                return 0;
             }
 
-            if (dateNo < 0 || dateNo > availableDates.Count)
+            if (dateNo <= 0 || dateNo > availableDates.Count)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("\n  Error: Flight date index out of range. Press Enter.");
                 Console.ResetColor();
                 Console.ReadLine();
+                return 0;
+            }
+
+            return dateNo;
+        }
+        
+        static void BookFlightTicket()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========================================\r\nBook A Flight Ticket\r\n========================================");
+            Console.ResetColor();
+
+            string ticketID = GetTicketID();
+            if (ticketID == "") return;
+
+            if (bookingRecord.ContainsKey(ticketID))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Ticket already has a booking. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
                 return;
             }
+
+            int flightNo = GetAvailableFlights();
+            if (flightNo == 0) return;
+
+            int dateNo = GetAvailableDates();
+            if (dateNo == 0) return;
 
             // available flights and dates started from index 1 -> decrease by 1
             string flight = flightNumbers[flightNo - 1];
@@ -313,40 +342,13 @@ namespace MiniFlightManagementSystem
             Console.WriteLine("========================================\r\nView Booking Details\r\n========================================");
             Console.ResetColor();
 
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write("\nEnter Ticket ID: ");
-            Console.ResetColor();
+            string ticketID = GetTicketID();
+            if (ticketID == "") return;
 
-            string ticketID = Console.ReadLine().Trim().ToUpper();
-
-            if (string.IsNullOrEmpty(ticketID))
+            if (!bookingRecord.ContainsKey(ticketID))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n  Error Empty Ticket ID. Press Enter.");
-                Console.ResetColor();
-                Console.ReadLine();
-                return;
-            }
-            else if (!ticketNumbers.Contains(ticketID))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n  Error: Ticket ID does not exist. Press Enter.");
-                Console.ResetColor();
-                Console.ReadLine();
-                return;
-            }
-            else if (cancelledTickets.Contains(ticketID))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n  This ticket has been cancelled. Press Enter.");
-                Console.ResetColor();
-                Console.ReadLine();
-                return;
-            }
-            else if (!bookingRecord.ContainsKey(ticketID))
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n  'No booking found for this ticket. Press Enter.");
+                Console.WriteLine("\n  No booking found for this ticket. Press Enter.");
                 Console.ResetColor();
                 Console.ReadLine();
                 return;
@@ -370,6 +372,166 @@ namespace MiniFlightManagementSystem
             Console.WriteLine($"\n  Press Enter");
             Console.ResetColor();
             Console.ReadLine();
+        }
+
+        static void UpdateBooking()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========================================\r\nUpdate A Booking\r\n========================================");
+            Console.ResetColor();
+
+            string ticketID = GetTicketID();
+            if (ticketID == "") return;
+            
+            if (!bookingRecord.ContainsKey(ticketID))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  No booking found for this ticket. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
+            string[] bookingParts = bookingRecord[ticketID].Split('|');
+            string flight = bookingParts[0];
+            string date = bookingParts[1];
+
+            int passengerIndex = ticketNumbers.IndexOf(ticketID);
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n--- Booking Details ---");
+            Console.WriteLine($"Passenger     : {passengerNames[passengerIndex]}");
+            Console.WriteLine($"Ticket ID     : {ticketID}");
+            Console.WriteLine($"Flight        : {flight}");
+            Console.WriteLine($"Date          : {date}");
+            Console.WriteLine("-----------------------");
+            Console.ResetColor();
+
+            // Display sub-menu
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n(1) Change flight only\n(2) Change date only\n(3) Change both\n(0) Cancel updat");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("\nSelect option: ");
+            Console.ResetColor();
+
+            // Save old values before switch
+            string oldFlight = flight;
+            string oldDate = date;
+
+            int flightNo;
+            int dateNo;
+            string newFlight;
+            string newDate;
+
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    flightNo = GetAvailableFlights();
+                    if (flightNo == 0) return;
+
+                    newFlight = flightNumbers[flightNo - 1];
+
+                    if (newFlight == oldFlight)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Cannot Update to the same flight. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    // Update booking record
+                    bookingRecord[ticketID] = $"{newFlight}|{date}";
+
+                    Console.WriteLine("\n--- Update Confirmation ---");
+                    Console.WriteLine($"{"Field",-10} {"Old",-10} {"New"}");
+                    Console.WriteLine(new string('-', 35));
+                    Console.WriteLine($"{"Flight",-10} {oldFlight,-10} {newFlight}");
+                    Console.WriteLine($"{"Date",-10} {oldDate,-10} {date}");
+                    Console.WriteLine(new string('-', 35));
+                    Console.ReadLine();
+                    break;
+
+                case "2":
+                    dateNo = GetAvailableDates();
+                    if (dateNo == 0) return;
+
+                    newDate = availableDates[dateNo - 1];
+
+                    if (newDate == oldDate)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Cannot Update to the same date. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    // Update booking record
+                    bookingRecord[ticketID] = $"{flight}|{newDate}";
+
+                    Console.WriteLine("\n--- Update Confirmation ---");
+                    Console.WriteLine($"{"Field",-10} {"Old",-10} {"New"}");
+                    Console.WriteLine(new string('-', 35));
+                    Console.WriteLine($"{"Flight",-10} {oldFlight,-10} {flight}");
+                    Console.WriteLine($"{"Date",-10} {oldDate,-10} {newDate}");
+                    Console.WriteLine(new string('-', 35));
+                    Console.ReadLine();
+                    break;
+
+                case "3":
+                    flightNo = GetAvailableFlights();
+                    if (flightNo == 0) return;
+
+                    newFlight = flightNumbers[flightNo - 1];
+
+                    if (newFlight == oldFlight)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Cannot Update to the same flight. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    dateNo = GetAvailableDates();
+                    if (dateNo == 0) return;
+
+                    newDate = availableDates[dateNo - 1];
+
+                    if (newDate == oldDate)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Cannot Update to the same date. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+                    
+                    // Update booking record
+                    bookingRecord[ticketID] = $"{newFlight}|{newDate}";
+
+                    Console.WriteLine("\n--- Update Confirmation ---");
+                    Console.WriteLine($"{"Field",-10} {"Old",-10} {"New"}");
+                    Console.WriteLine(new string('-', 35));
+                    Console.WriteLine($"{"Flight",-10} {oldFlight,-10} {newFlight}");
+                    Console.WriteLine($"{"Date",-10} {oldDate,-10} {newDate}");
+                    Console.WriteLine(new string('-', 35));
+                    Console.ReadLine();
+                    break;
+
+                case "0":
+                    return;
+
+                default:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\n  Invalid option. Press Enter to try again.");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    break;
+            }
         }
     }
 }
