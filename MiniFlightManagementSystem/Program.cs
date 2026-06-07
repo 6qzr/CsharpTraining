@@ -1,4 +1,6 @@
-﻿namespace MiniFlightManagementSystem
+﻿using System.Xml.Linq;
+
+namespace MiniFlightManagementSystem
 {
     internal class Program
     {
@@ -62,6 +64,10 @@
 
                 switch (Console.ReadLine())
                 {
+                    case "1":
+                        RegisterNewPassenger();
+                        break;
+                    
                     case "0":
                         return;
 
@@ -73,6 +79,56 @@
                         break;
                 }
             }
+        }
+
+        static void RegisterNewPassenger()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========================================\r\nRegister New Passenger\r\n========================================");
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("\nEnter passenger's full name: ");
+            Console.ResetColor();
+
+            string passengerFullName = Console.ReadLine().Trim();
+
+            if (string.IsNullOrEmpty(passengerFullName))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Passenger's full name cannot be empty. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
+            for (int i = 0; i < passengerNames.Count; i++)
+            {
+                if (passengerNames[i].ToLower() == passengerFullName.ToLower())
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\n  Error: Passenger '{passengerFullName}' is already registered.");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    return;
+                }
+            }
+
+            // Auto-generate the ticket ID using the format TKT-XXX where XXX is the next sequential number padded to 3 digits
+            string newTicket = "TKT" + (ticketNumbers.Count + 1).ToString("D3");
+
+            // Add the passenger name to passengerNames and the generated ticket ID to ticketNumbers at the same index
+            passengerNames.Add(passengerFullName);
+            ticketNumbers.Add(newTicket);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\n  Passenger and Ticket added successfully. Press Enter");
+            Console.ResetColor();
+            Console.ForegroundColor= ConsoleColor.White;
+            Console.WriteLine($"  Passenger: {passengerFullName}");
+            Console.WriteLine($"  Ticket:    {newTicket}");
+            Console.ReadLine();
         }
     }
 }
