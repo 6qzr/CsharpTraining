@@ -76,6 +76,10 @@ namespace MiniFlightManagementSystem
                         BookFlightTicket();
                         break;
 
+                    case "4":
+                        ViewBookingDetails();
+                        break;
+
                     case "0":
                         return;
 
@@ -211,7 +215,7 @@ namespace MiniFlightManagementSystem
             else if (bookingRecord.ContainsKey(ticketID))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n   Ticket already has a booking. Press Enter.");
+                Console.WriteLine("\n  Ticket already has a booking. Press Enter.");
                 Console.ResetColor();
                 Console.ReadLine();
                 return;
@@ -287,6 +291,7 @@ namespace MiniFlightManagementSystem
             bookingRecord[ticketID] = $"{flight}|{date}";
 
             int passengerIndex = ticketNumbers.IndexOf(ticketID);
+            
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\n--- Booking Confirmation ---");
             Console.WriteLine($"Ticket ID     : {ticketID}");
@@ -296,7 +301,73 @@ namespace MiniFlightManagementSystem
             Console.WriteLine("----------------------------");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"\n  Flight booked successfully. Press Enter");
+            Console.WriteLine($"\n  Flight booked successfully. Press Enter.");
+            Console.ResetColor();
+            Console.ReadLine();
+        }
+
+        static void ViewBookingDetails()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========================================\r\nView Booking Details\r\n========================================");
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("\nEnter Ticket ID: ");
+            Console.ResetColor();
+
+            string ticketID = Console.ReadLine().Trim().ToUpper();
+
+            if (string.IsNullOrEmpty(ticketID))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Error Empty Ticket ID. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+            else if (!ticketNumbers.Contains(ticketID))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Error: Ticket ID does not exist. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+            else if (cancelledTickets.Contains(ticketID))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  This ticket has been cancelled. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+            else if (!bookingRecord.ContainsKey(ticketID))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  'No booking found for this ticket. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
+            string[] bookingParts = bookingRecord[ticketID].Split('|');
+            string flight = bookingParts[0];
+            string date = bookingParts[1];
+
+            int passengerIndex = ticketNumbers.IndexOf(ticketID);
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\n--- Booking Details ---");
+            Console.WriteLine($"Passenger     : {passengerNames[passengerIndex]}");
+            Console.WriteLine($"Ticket ID     : {ticketID}");
+            Console.WriteLine($"Flight        : {flight}");
+            Console.WriteLine($"Date          : {date}");
+            Console.WriteLine("-----------------------");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\n  Press Enter");
             Console.ResetColor();
             Console.ReadLine();
         }
