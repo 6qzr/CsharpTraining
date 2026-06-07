@@ -39,6 +39,10 @@ namespace MiniFlightManagementSystem
         // Passenger names on the standby waitlist
         static Queue<string> waitlistQueue = new Queue<string>();
 
+
+        static int boardingRow = 10;
+        static int boardingSeat = 0; // 0=A, 1=B, 2=C, 3=D, 4=E, 5=F
+
         static void Main(string[] args)
         {
             while (true)
@@ -89,8 +93,11 @@ namespace MiniFlightManagementSystem
                         break;
 
                     case "7":
-                        waitlistQueue.Enqueue(passengerNames[1]);
                         PassengerCheckIn();
+                        break;
+
+                    case "8":
+                        BoardPassengers();
                         break;
 
                     case "0":
@@ -758,6 +765,140 @@ namespace MiniFlightManagementSystem
                     Console.ReadLine();
                     break;
                 
+                case "0":
+                    return;
+
+                default:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\n  Invalid option. Press Enter to try again.");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    break;
+            }
+        }
+
+        static void BoardPassengers()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========================================\r\nBoard Passengers\r\n========================================");
+            Console.ResetColor();
+
+            // Display sub-menu
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n(1) Load boarding stack from check-in queue\n(2) Board next passenger\n(3) View boarding stack\n(4) View boarding log\n(0) Back");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("\nSelect option: ");
+            Console.ResetColor();
+
+            string passenger;
+
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    if (checkedInQueue.Count == 0 && boardingStack.Count != 0 )
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Warning: Checked-In queue is empty and boarding stack has passengers. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+                    else if (checkedInQueue.Count == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n Checked-In queue is empty. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+                    
+                    if (checkedInQueue.Count != 0)
+                    {
+                        int loaded = checkedInQueue.Count;
+                        while (checkedInQueue.Count > 0)
+                        {
+                            boardingStack.Push(checkedInQueue.Dequeue());
+                        }
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"\nTotal loaded passengers: {loaded}");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                    }
+                    break;
+
+                case "2":
+                    if (boardingStack.Count == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  boarding stack is empty. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    string boardedPassenger = boardingStack.Pop();
+
+                    char seatLetter = (char)('A' + boardingSeat);
+                    string assignedSeat = $"{boardingRow}{seatLetter}";
+
+                    passengerSeatMap[boardedPassenger] = assignedSeat;
+
+                    boardingSeat++;
+                    if (boardingSeat > 5)
+                    {
+                        boardingSeat = 0;
+                        boardingRow++;
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"\n  Passenger : {boardedPassenger}");
+                    Console.WriteLine($"  Seat      : {assignedSeat}");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    break;
+
+                case "3":
+                    if (boardingStack.Count == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Boarding stack is empty. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    Console.WriteLine($"\n{"Pos",-5} {"Passenger"}");
+                    Console.WriteLine(new string('-', 25));
+                    int pos = 1;
+                    foreach (string p in boardingStack)
+                    {
+                        Console.WriteLine($"{pos,-5} {p}");
+                        pos++;
+                    }
+                    Console.ReadLine();
+                    break;
+
+                case "4":
+                    if (passengerSeatMap.Count == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  No passengers boarded yet. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    Console.WriteLine($"\n{"Passenger",-20} {"Seat"}");
+                    Console.WriteLine(new string('-', 30));
+                    foreach (KeyValuePair<string, string> entry in passengerSeatMap)
+                    {
+                        Console.WriteLine($"{entry.Key,-20} {entry.Value}");
+                    }
+                    Console.ReadLine();
+                    break;
+
                 case "0":
                     return;
 
