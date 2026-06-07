@@ -120,7 +120,7 @@ namespace MiniFlightManagementSystem
             }
 
             // Auto-generate the ticket ID using the format TKT-XXX where XXX is the next sequential number padded to 3 digits
-            string newTicket = "TKT" + (ticketNumbers.Count + 1).ToString("D3");
+            string newTicket = "TKT-" + (ticketNumbers.Count + 1).ToString("D3");
 
             // Add the passenger name to passengerNames and the generated ticket ID to ticketNumbers at the same index
             passengerNames.Add(passengerFullName);
