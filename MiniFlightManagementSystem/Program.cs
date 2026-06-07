@@ -88,6 +88,11 @@ namespace MiniFlightManagementSystem
                         CancelTicket();
                         break;
 
+                    case "7":
+                        waitlistQueue.Enqueue(passengerNames[1]);
+                        PassengerCheckIn();
+                        break;
+
                     case "0":
                         return;
 
@@ -645,6 +650,124 @@ namespace MiniFlightManagementSystem
             Console.WriteLine("----------------------------");
             Console.ResetColor();
             Console.ReadLine();
+        }
+
+        static void PassengerCheckIn()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========================================\r\nPassenger Check-In\r\n========================================");
+            Console.ResetColor();
+
+            // Display sub-menu
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n(1) Check in a passenger\n(2) View check-in queue\n(3) Process next passenger\n(0) Back");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("\nSelect option: ");
+            Console.ResetColor();
+
+            string passenger;
+
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    string ticketID = GetTicketID();
+                    if (ticketID == "") return;
+
+                    if (cancelledTickets.Contains(ticketID))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  This ticket is cancelled. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    if (!bookingRecord.ContainsKey(ticketID))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  No booking found for this ticket. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    passenger = passengerNames[ticketNumbers.IndexOf(ticketID)];
+
+                    if (checkedInQueue.Contains(passenger))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Passenger already Checked-In. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    if (checkedInQueue.Count < 10)
+                    {
+                        checkedInQueue.Enqueue(passenger);
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"\n  Passenger added to Check-In Queue. Press Enter");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        waitlistQueue.Enqueue(passenger);
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine($"\n  Passenger added to Wait-List Queue. Press Enter");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                    }
+
+                    break;
+
+                case "2":
+                    int counter = 1;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    foreach (string currentPassenger in checkedInQueue)
+                    {
+                        Console.Write($"\n{counter}. {currentPassenger}");
+                    }
+                    Console.WriteLine($"\n\nPassengers in the waitlist: {waitlistQueue.Count}");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    break;
+
+                case "3":
+                    if (checkedInQueue.Count == 0)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  No passengers in the Checked-In Queue. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+                    
+                    passenger = checkedInQueue.Dequeue();
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine($"\n{passenger}   PROCESSED");
+                    Console.ResetColor();
+
+                    if (waitlistQueue.Count != 0)
+                    {
+                        checkedInQueue.Enqueue(waitlistQueue.Dequeue());
+                    }
+                    Console.ReadLine();
+                    break;
+                
+                case "0":
+                    return;
+
+                default:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\n  Invalid option. Press Enter to try again.");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    break;
+            }
         }
     }
 }
