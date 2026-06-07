@@ -85,6 +85,7 @@ namespace MiniFlightManagementSystem
                         break;
 
                     case "0":
+                        CancelTicket();
                         return;
 
                     default:
@@ -532,6 +533,115 @@ namespace MiniFlightManagementSystem
                     Console.ReadLine();
                     break;
             }
+        }
+
+        static void CancelTicket()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========================================\r\nCancel A Ticket\r\n========================================");
+            Console.ResetColor();
+
+            string ticketID = GetTicketID();
+            if (ticketID == "") return;
+
+            if (cancelledTickets.Contains(ticketID))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Ticket is already cancelled. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
+            string passengerName = passengerNames[ticketNumbers.IndexOf(ticketID)];
+
+            if (bookingRecord.ContainsKey(ticketID))
+            {
+                string[] bookingParts = bookingRecord[ticketID].Split('|');
+                string flight = bookingParts[0];
+                string date = bookingParts[1];
+
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("\n--- Booking Removed ---");
+                Console.WriteLine($"Passenger     : {passengerName}");
+                Console.WriteLine($"Ticket ID     : {ticketID}");
+                Console.WriteLine($"Flight        : {flight}");
+                Console.WriteLine($"Date          : {date}");
+                Console.WriteLine("-----------------------");
+                Console.ResetColor();
+
+                bookingRecord.Remove(ticketID);
+            }
+
+            cancelledTickets.Add(ticketID);
+
+            // Temp Queue
+            Queue<string> tempQ = new Queue<string>();
+            bool removedFromQueue = false;
+
+            foreach (string passenger in checkedInQueue)
+            {
+                if (passenger == passengerName)
+                {
+                    removedFromQueue = true; // skip this one
+                }
+                else
+                {
+                    tempQ.Enqueue(passenger);
+                }
+            }
+
+            if (removedFromQueue)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("\n  Notice: Passenger was removed from Check-In Queue.");
+                Console.ResetColor();
+            }
+
+            checkedInQueue = new Queue<string>(tempQ);
+
+
+            // Temp Stack
+            Stack<string> tempS = new Stack<string>();
+            bool removedFromStack = false;
+
+            int stackCount = boardingStack.Count; // capture once
+
+            for (int i = 0; i < stackCount; i++)
+            {
+                if (boardingStack.Peek() != passengerName)
+                {
+                    tempS.Push(boardingStack.Pop());
+                }
+                else
+                {
+                    removedFromStack = true; // skip this one
+                    boardingStack.Pop();
+                }
+            }
+
+            if (removedFromStack)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("\n  Notice: Passenger was removed from Boarding Stack.");
+                Console.ResetColor();
+            }
+
+            // Reverse it back to original order
+            while (tempS.Count > 0)
+            {
+                boardingStack.Push(tempS.Pop());
+            }
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("\n--- Cancellation Summary ---");
+            Console.WriteLine($"Passenger     : {passengerName}");
+            Console.WriteLine($"Ticket ID     : {ticketID}");
+            Console.WriteLine($"Status        : CANCELLED");
+            Console.WriteLine("----------------------------");
+            Console.ResetColor();
+            Console.ReadLine();
         }
     }
 }
