@@ -98,6 +98,10 @@
                         BoardPassengers();
                         break;
 
+                    case "9":
+                        GenerateFlightManifest();
+                        break;
+
                     case "0":
                         return;
 
@@ -907,6 +911,130 @@
                     Console.ReadLine();
                     break;
             }
+        }
+
+        static void GenerateFlightManifest()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========================================\r\nGenerate Flight Manifest\r\n========================================");
+            Console.ResetColor();
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("\nEnter Flight Number: ");
+            Console.ResetColor();
+
+            string flightNumber = Console.ReadLine().Trim().ToUpper();
+
+            if (string.IsNullOrEmpty(flightNumber))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Error: Empty Flight Number. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+            else if (!flightNumbers.Contains(flightNumber))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  Error: Flight Number does not exist. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
+            // Collect all ticket IDs whose flight matches the requested flight into a temporary List.
+            List<string> tickets = new List<string>();
+            foreach (KeyValuePair<string, string> record in bookingRecord)
+            {
+                string ticketID = record.Key;
+                string flight = record.Value.Split('|')[0];
+                if (flight == flightNumber)
+                {
+                    tickets.Add(ticketID);
+                }
+            }
+
+            // For each collected ticket ID, retrieve the passenger name
+            List<string> passengers = new List<string>();
+            foreach (string ticket in  tickets)
+            {
+                passengers.Add(passengerNames[ticketNumbers.IndexOf(ticket)]);
+            }
+
+            // Sort the collected passenger records alphabetically by passenger name using a manual bubble sort on a List
+            string temp;
+            string tempTicket;
+            for (int i = 0; i < passengers.Count; i++)
+            {
+                for (int j = passengers.Count - 1; j > 0; j--)
+                {
+                    if (passengers[j].CompareTo(passengers[j - 1]) < 0)
+                    {
+                        // swap passengers
+                        temp = passengers[j];
+                        passengers[j] = passengers[j - 1];
+                        passengers[j - 1] = temp;
+
+                        // swap tickets at same index
+                        tempTicket = tickets[j];
+                        tickets[j] = tickets[j - 1];
+                        tickets[j - 1] = tempTicket;
+                    }
+                }
+            }
+
+            if (tickets.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  No passengers booked on this flight. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
+            Console.WriteLine($"\n{"No.",-5} {"Passenger Name",-20} {"Ticket ID",-12} {"Date",-14} {"Seat",-8} {"Status"}");
+            Console.WriteLine(new string('-', 70));
+
+            int boarded = 0, checkedIn = 0, cancelled = 0;
+
+            for (int i = 0; i < passengers.Count; i++)
+            {
+                string ticketID = tickets[i];
+                string passengerName = passengers[i];
+                string date = bookingRecord[ticketID].Split('|')[1];
+                string seat = passengerSeatMap.ContainsKey(passengerName) ? passengerSeatMap[passengerName] : "—";
+
+                string status;
+                if (passengerSeatMap.ContainsKey(passengerName))
+                {
+                    status = "Boarded";
+                    boarded++;
+                }
+                else if (checkedInQueue.Contains(passengerName))
+                {
+                    status = "Checked-In";
+                    checkedIn++;
+                }
+                else if (cancelledTickets.Contains(ticketID))
+                {
+                    status = "Cancelled";
+                    cancelled++;
+                }
+                else
+                {
+                    status = "Booked";
+                }
+
+                Console.WriteLine($"{i + 1,-5} {passengerName,-20} {ticketID,-12} {date,-14} {seat,-8} {status}");
+            }
+
+            Console.WriteLine(new string('-', 70));
+            Console.WriteLine($"\nTotal Passengers : {passengers.Count}");
+            Console.WriteLine($"Boarded          : {boarded}");
+            Console.WriteLine($"Checked-In       : {checkedIn}");
+            Console.WriteLine($"Cancelled        : {cancelled}");
+            Console.ReadLine();
         }
     }
 }
