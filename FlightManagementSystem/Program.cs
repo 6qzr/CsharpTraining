@@ -1270,6 +1270,19 @@
                         return;
                     }
 
+                    // Check if seat is already taken by another passenger
+                    foreach (KeyValuePair<string, string> entry in passengerSeatMap)
+                    {
+                        if (entry.Value == newSeat && entry.Key != passenger)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine($"\n  Seat {newSeat} is already assigned to {entry.Key}. Press Enter.");
+                            Console.ResetColor();
+                            Console.ReadLine();
+                            return;
+                        }
+                    }
+
                     passengerSeatMap[passenger] = newSeat;
 
                     Console.ForegroundColor = ConsoleColor.White;
