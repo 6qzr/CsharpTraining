@@ -102,6 +102,10 @@
                         GenerateFlightManifest();
                         break;
 
+                    case "10":
+                        ManageWaitlistSeatAssignment();
+                        break;
+
                     case "0":
                         return;
 
@@ -348,7 +352,7 @@
             Console.WriteLine("----------------------------");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"\n  Flight booked successfully. Press Enter.");
+            Console.WriteLine($"\n  Booked successfully. Press Enter.");
             Console.ResetColor();
             Console.ReadLine();
         }
@@ -1035,6 +1039,259 @@
             Console.WriteLine($"Checked-In       : {checkedIn}");
             Console.WriteLine($"Cancelled        : {cancelled}");
             Console.ReadLine();
+        }
+
+        static void ManageWaitlistSeatAssignment()
+        {
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========================================\r\nManage Waitlist & Seat Assignment\r\n========================================");
+            Console.ResetColor();
+
+            // Display sub-menu
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("\n(1) View waitlist\n(2) Promote next waitlist passenger\n(3) Promote specific waitlist passenger\n(4) Reassign passenger seat\n(0) Back");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.Write("\nSelect option: ");
+            Console.ResetColor();
+
+            string passenger;
+            int flightChoice;
+            int dateChoice;
+            string flight;
+            string date;
+            string ticket;
+            string booking;
+
+            switch(Console.ReadLine())
+            {
+                case "1":
+                    if (waitlistQueue.Count != 0)
+                    {
+                        int counter = 1;
+                        Console.ForegroundColor = ConsoleColor.White;
+                        foreach (string currentPassenger in waitlistQueue)
+                        {
+                            Console.Write($"\n{counter}. {currentPassenger}");
+                            counter++;
+                        }
+                        Console.WriteLine($"\n\nPassengers in the waitlist: {waitlistQueue.Count}");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  No passengers in the wait-list. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                    }
+                    
+                    break;
+
+                case "2":
+                    if (waitlistQueue.Count != 0)
+                    {
+                        passenger = waitlistQueue.Dequeue();
+                        
+                        flightChoice = GetAvailableFlights();
+                        if (flightChoice == 0) return;
+
+                        dateChoice = GetAvailableDates();
+                        if (dateChoice == 0) return;
+
+                        flight = flightNumbers[flightChoice - 1];
+                        date = availableDates[dateChoice - 1];
+                        ticket = ticketNumbers[passengerNames.IndexOf(passenger)];
+
+                        booking = $"{flight}|{date}";
+                        bookingRecord[ticket] = booking;
+
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("\n--- Booking Confirmation ---");
+                        Console.WriteLine($"Ticket ID     : {ticket}");
+                        Console.WriteLine($"Passenger     : {passenger}");
+                        Console.WriteLine($"Flight        : {flight}");
+                        Console.WriteLine($"Date          : {date}");
+                        Console.WriteLine("----------------------------");
+                        Console.ResetColor();
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"\n  Flight booked successfully. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  No passengers in the wait-list. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                    }
+                    break;
+
+                case "3":
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.Write("\nEnter passenger's full name: ");
+                    Console.ResetColor();
+
+                    passenger = Console.ReadLine().Trim();
+
+                    if (string.IsNullOrEmpty(passenger))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Passenger's name cannot be empty. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    if (!waitlistQueue.Contains(passenger))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  No such passenger in the wait-list. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    // Temp Queue
+                    Queue<string> tempQ = new Queue<string>();
+
+                    foreach (string currentPassenger in waitlistQueue)
+                    {
+                        if (currentPassenger != passenger)
+                        {
+                            tempQ.Enqueue(currentPassenger);
+                        }
+                    }
+                  
+                    waitlistQueue = new Queue<string>(tempQ);
+
+                    flightChoice = GetAvailableFlights();
+                    if (flightChoice == 0) return;
+
+                    dateChoice = GetAvailableDates();
+                    if (dateChoice == 0) return;
+
+                    flight = flightNumbers[flightChoice - 1];
+                    date = availableDates[dateChoice - 1];
+                    ticket = ticketNumbers[passengerNames.IndexOf(passenger)];
+
+                    booking = $"{flight}|{date}";
+                    bookingRecord[ticket] = booking;
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n--- Booking Confirmation ---");
+                    Console.WriteLine($"Ticket ID     : {ticket}");
+                    Console.WriteLine($"Passenger     : {passenger}");
+                    Console.WriteLine($"Flight        : {flight}");
+                    Console.WriteLine($"Date          : {date}");
+                    Console.WriteLine("----------------------------");
+                    Console.ResetColor();
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"\n  Booked successfully. Press Enter.");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    break;
+
+                case "4":
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.Write("\nEnter passenger's full name: ");
+                    Console.ResetColor();
+
+                    passenger = Console.ReadLine().Trim();
+
+                    if (string.IsNullOrEmpty(passenger))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Passenger's name cannot be empty. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    if (!passengerSeatMap.ContainsKey(passenger))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  No such passenger in the seat map. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    string oldSeat = passengerSeatMap[passenger];
+
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.Write("\nEnter new seat code (e.g. 14A): ");
+                    Console.ResetColor();
+
+                    string newSeat = Console.ReadLine().Trim().ToUpper();
+
+                    if (string.IsNullOrEmpty(newSeat))
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Seat code cannot be empty. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    // Must be at least 2 characters — e.g. "10A"
+                    if (newSeat.Length != 3)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Invalid seat format. Example: 14A. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    // Last character must be A–F
+                    char seatLetter = newSeat[newSeat.Length - 1];
+                    if (seatLetter < 'A' || seatLetter > 'F')
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Invalid seat letter. Must be A to F. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    // Everything before the last character must be a valid row number
+                    string rowPart = newSeat.Substring(0, newSeat.Length - 1);
+                    int rowNumber;
+                    if (!int.TryParse(rowPart, out rowNumber) || rowNumber < 10 || rowNumber > 40)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\n  Invalid row number. Must be between 10 and 40. Press Enter.");
+                        Console.ResetColor();
+                        Console.ReadLine();
+                        return;
+                    }
+
+                    passengerSeatMap[passenger] = newSeat;
+
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine("\n--- Seat Reassignment ---");
+                    Console.WriteLine($"Passenger : {passenger}");
+                    Console.WriteLine($"Old Seat  : {oldSeat}");
+                    Console.WriteLine($"New Seat  : {newSeat}");
+                    Console.WriteLine("-------------------------");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    break;
+                
+                case "0":
+                    return;
+
+                default:
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\n  Invalid option. Press Enter to try again.");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    break;
+            }
         }
     }
 }
