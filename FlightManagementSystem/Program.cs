@@ -599,56 +599,51 @@
 
             // Temp Queue
             Queue<string> tempQ = new Queue<string>();
-            bool removedFromQueue = false;
-
-            foreach (string passenger in checkedInQueue)
+            
+            if (checkedInQueue.Contains(passengerName))
             {
-                if (passenger == passengerName)
+                while (checkedInQueue.Count > 0)
                 {
-                    removedFromQueue = true; // skip this one
-                }
-                else
-                {
-                    tempQ.Enqueue(passenger);
+                    if (checkedInQueue.Peek() == passengerName)
+                    {
+                        checkedInQueue.Dequeue();
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("\n  Notice: Passenger was removed from Check-In Queue.");
+                        Console.ResetColor();
+                    }
+                    else
+                    {
+                        tempQ.Enqueue(checkedInQueue.Dequeue());
+                    }
                 }
             }
-
-            if (removedFromQueue)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("\n  Notice: Passenger was removed from Check-In Queue.");
-                Console.ResetColor();
-            }
-
+                        
             checkedInQueue = new Queue<string>(tempQ);
-
 
             // Temp Stack
             Stack<string> tempS = new Stack<string>();
-            bool removedFromStack = false;
 
-            int stackCount = boardingStack.Count; // capture once
 
-            for (int i = 0; i < stackCount; i++)
+            if (boardingStack.Contains(passengerName))
             {
-                if (boardingStack.Peek() != passengerName)
+                int stackCount = boardingStack.Count; // capture once
+
+                for (int i = 0; i < stackCount; i++)
                 {
-                    tempS.Push(boardingStack.Pop());
-                }
-                else
-                {
-                    removedFromStack = true; // skip this one
-                    boardingStack.Pop();
+                    if (boardingStack.Peek() != passengerName)
+                    {
+                        tempS.Push(boardingStack.Pop());
+                    }
+                    else
+                    {
+                        boardingStack.Pop();
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("\n  Notice: Passenger was removed from Boarding Stack.");
+                        Console.ResetColor();
+                    }
                 }
             }
-
-            if (removedFromStack)
-            {
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine("\n  Notice: Passenger was removed from Boarding Stack.");
-                Console.ResetColor();
-            }
-
+            
             // Reverse it back to original order
             while (tempS.Count > 0)
             {
@@ -739,9 +734,10 @@
                 case "2":
                     int counter = 1;
                     Console.ForegroundColor = ConsoleColor.White;
-                    foreach (string currentPassenger in checkedInQueue)
+                    foreach (string currentPassenger in checkedInQueue.ToList())
                     {
                         Console.Write($"\n{counter}. {currentPassenger}");
+                        counter++;
                     }
                     Console.WriteLine($"\n\nPassengers in the waitlist: {waitlistQueue.Count}");
                     Console.ResetColor();
@@ -878,7 +874,7 @@
                     Console.WriteLine($"\n{"Pos",-5} {"Passenger"}");
                     Console.WriteLine(new string('-', 25));
                     int pos = 1;
-                    foreach (string p in boardingStack)
+                    foreach (string p in boardingStack.ToList())
                     {
                         Console.WriteLine($"{pos,-5} {p}");
                         pos++;
@@ -1071,7 +1067,7 @@
                     {
                         int counter = 1;
                         Console.ForegroundColor = ConsoleColor.White;
-                        foreach (string currentPassenger in waitlistQueue)
+                        foreach (string currentPassenger in waitlistQueue.ToList())
                         {
                             Console.Write($"\n{counter}. {currentPassenger}");
                             counter++;
@@ -1158,12 +1154,13 @@
                     // Temp Queue
                     Queue<string> tempQ = new Queue<string>();
 
-                    foreach (string currentPassenger in waitlistQueue)
+                    while (waitlistQueue.Count > 0)
                     {
-                        if (currentPassenger != passenger)
+                        if (waitlistQueue.Peek() == passenger)
                         {
-                            tempQ.Enqueue(currentPassenger);
+                            waitlistQueue.Dequeue();
                         }
+                        tempQ.Enqueue(waitlistQueue.Dequeue());
                     }
                   
                     waitlistQueue = new Queue<string>(tempQ);
