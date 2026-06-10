@@ -141,16 +141,26 @@
                 return;
             }
 
-            for (int i = 0; i < passengerNames.Count; i++)
+            //for (int i = 0; i < passengerNames.Count; i++)
+            //{
+            //    if (passengerNames[i].ToLower() == passengerFullName.ToLower())
+            //    {
+            //        Console.ForegroundColor = ConsoleColor.Red;
+            //        Console.WriteLine($"\n  Error: Passenger '{passengerFullName}' is already registered.");
+            //        Console.ResetColor();
+            //        Console.ReadLine();
+            //        return;
+            //    }
+            //}
+
+            bool isPassengerRegistered = passengerNames.Any(p => p.ToLower() == passengerFullName.ToLower());
+            if (isPassengerRegistered)
             {
-                if (passengerNames[i].ToLower() == passengerFullName.ToLower())
-                {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"\n  Error: Passenger '{passengerFullName}' is already registered.");
-                    Console.ResetColor();
-                    Console.ReadLine();
-                    return;
-                }
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n  Error: Passenger '{passengerFullName}' is already registered.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
             }
 
             // Auto-generate the ticket ID using the format TKT-XXX where XXX is the next sequential number padded to 3 digits
@@ -955,6 +965,15 @@
                 }
             }
 
+            if (tickets.Count == 0)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\n  No passengers booked on this flight. Press Enter.");
+                Console.ResetColor();
+                Console.ReadLine();
+                return;
+            }
+
             // For each collected ticket ID, retrieve the passenger name
             List<string> passengers = new List<string>();
             foreach (string ticket in  tickets)
@@ -983,16 +1002,7 @@
                     }
                 }
             }
-
-            if (tickets.Count == 0)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n  No passengers booked on this flight. Press Enter.");
-                Console.ResetColor();
-                Console.ReadLine();
-                return;
-            }
-
+            
             Console.WriteLine($"\n{"No.",-5} {"Passenger Name",-20} {"Ticket ID",-12} {"Date",-14} {"Seat",-8} {"Status"}");
             Console.WriteLine(new string('-', 70));
 
