@@ -230,7 +230,7 @@
             Console.Write("\nEnter Ticket ID: ");
             Console.ResetColor();
 
-            string ticketID = Console.ReadLine().Trim().ToUpper();
+            string ticketID = Console.ReadLine()?.Trim().ToUpper();
 
             if (string.IsNullOrEmpty(ticketID))
             {
@@ -622,55 +622,71 @@
 
             // Temp Queue
             Queue<string> tempQ = new Queue<string>();
-            
-            if (checkedInQueue.Contains(passengerName))
+
+            bool removed = false;
+
+            while (checkedInQueue.Count > 0)
             {
-                while (checkedInQueue.Count > 0)
+                string currentPassenger = checkedInQueue.Dequeue();
+
+                if (currentPassenger == passengerName)
                 {
-                    if (checkedInQueue.Peek() == passengerName)
-                    {
-                        checkedInQueue.Dequeue();
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.WriteLine("\n  Notice: Passenger was removed from Check-In Queue.");
-                        Console.ResetColor();
-                    }
-                    else
-                    {
-                        tempQ.Enqueue(checkedInQueue.Dequeue());
-                    }
+                    removed = true;
+                    continue; // skip adding this passenger back
                 }
+
+                tempQ.Enqueue(currentPassenger);
             }
-                        
-            checkedInQueue = new Queue<string>(tempQ);
+
+            while (tempQ.Count > 0)
+            {
+                checkedInQueue.Enqueue(tempQ.Dequeue());
+            }
+
+            if (removed)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("\n  Notice: Passenger was removed from Check-In Queue.");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine("\n  Passenger not found.");
+            }
 
             // Temp Stack
             Stack<string> tempS = new Stack<string>();
 
+            removed = false;
 
-            if (boardingStack.Contains(passengerName))
+            while (boardingStack.Count > 0)
             {
-                int stackCount = boardingStack.Count; // capture once
+                string currentPassenger = boardingStack.Pop();
 
-                for (int i = 0; i < stackCount; i++)
+                if (currentPassenger == passengerName)
                 {
-                    if (boardingStack.Peek() != passengerName)
-                    {
-                        tempS.Push(boardingStack.Pop());
-                    }
-                    else
-                    {
-                        boardingStack.Pop();
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.WriteLine("\n  Notice: Passenger was removed from Boarding Stack.");
-                        Console.ResetColor();
-                    }
+                    removed = true;
+                    continue; // don't put it back
                 }
+
+                tempS.Push(currentPassenger);
             }
-            
-            // Reverse it back to original order
+
+            // Restore original order
             while (tempS.Count > 0)
             {
                 boardingStack.Push(tempS.Pop());
+            }
+
+            if (removed)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("\n  Notice: Passenger was removed from Boarding Stack.");
+                Console.ResetColor();
+            }
+            else
+            {
+                Console.WriteLine("\n  Passenger not found.");
             }
 
             Console.ForegroundColor = ConsoleColor.Green;
