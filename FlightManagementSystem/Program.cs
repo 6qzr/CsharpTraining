@@ -121,63 +121,76 @@
 
         static void RegisterNewPassenger()
         {
-            Console.Clear();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("========================================\r\nRegister New Passenger\r\n========================================");
-            Console.ResetColor();
-
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.Write("\nEnter passenger's full name: ");
-            Console.ResetColor();
-
-            string passengerFullName = Console.ReadLine().Trim();
-
-            if (string.IsNullOrEmpty(passengerFullName))
+            try
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\n  Passenger's full name cannot be empty. Press Enter.");
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("========================================\r\nRegister New Passenger\r\n========================================");
+                Console.ResetColor();
+
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.Write("\nEnter passenger's full name: ");
+                Console.ResetColor();
+
+                string passengerFullName = Console.ReadLine().Trim();
+
+                if (string.IsNullOrEmpty(passengerFullName))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\n  Passenger's full name cannot be empty. Press Enter.");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    return;
+                }
+
+                //for (int i = 0; i < passengerNames.Count; i++)
+                //{
+                //    if (passengerNames[i].ToLower() == passengerFullName.ToLower())
+                //    {
+                //        Console.ForegroundColor = ConsoleColor.Red;
+                //        Console.WriteLine($"\n  Error: Passenger '{passengerFullName}' is already registered.");
+                //        Console.ResetColor();
+                //        Console.ReadLine();
+                //        return;
+                //    }
+                //}
+
+                bool isPassengerRegistered = passengerNames.Any(p => p.ToLower() == passengerFullName.ToLower());
+                if (isPassengerRegistered)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"\n  Error: Passenger '{passengerFullName}' is already registered.");
+                    Console.ResetColor();
+                    Console.ReadLine();
+                    return;
+                }
+
+                // Auto-generate the ticket ID using the format TKT-XXX where XXX is the next sequential number padded to 3 digits
+                string newTicket = "TKT-" + (ticketNumbers.Count + 1).ToString("D3");
+
+                // Add the passenger name to passengerNames and the generated ticket ID to ticketNumbers at the same index
+                passengerNames.Add(passengerFullName);
+                ticketNumbers.Add(newTicket);
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"\n  Passenger: {passengerFullName}");
+                Console.WriteLine($"  Ticket:    {newTicket}");
+                Console.ResetColor();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\n  Passenger and Ticket added successfully. Press Enter");
                 Console.ResetColor();
                 Console.ReadLine();
-                return;
             }
-
-            //for (int i = 0; i < passengerNames.Count; i++)
-            //{
-            //    if (passengerNames[i].ToLower() == passengerFullName.ToLower())
-            //    {
-            //        Console.ForegroundColor = ConsoleColor.Red;
-            //        Console.WriteLine($"\n  Error: Passenger '{passengerFullName}' is already registered.");
-            //        Console.ResetColor();
-            //        Console.ReadLine();
-            //        return;
-            //    }
-            //}
-
-            bool isPassengerRegistered = passengerNames.Any(p => p.ToLower() == passengerFullName.ToLower());
-            if (isPassengerRegistered)
+            catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"\n  Error: Passenger '{passengerFullName}' is already registered.");
+                Console.WriteLine("\nAn unexpected error occurred:");
+                Console.WriteLine(ex.Message);
                 Console.ResetColor();
+
+                Console.WriteLine("\nPress Enter to continue...");
                 Console.ReadLine();
-                return;
             }
-
-            // Auto-generate the ticket ID using the format TKT-XXX where XXX is the next sequential number padded to 3 digits
-            string newTicket = "TKT-" + (ticketNumbers.Count + 1).ToString("D3");
-
-            // Add the passenger name to passengerNames and the generated ticket ID to ticketNumbers at the same index
-            passengerNames.Add(passengerFullName);
-            ticketNumbers.Add(newTicket);
-
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"\n  Passenger: {passengerFullName}");
-            Console.WriteLine($"  Ticket:    {newTicket}");
-            Console.ResetColor();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"\n  Passenger and Ticket added successfully. Press Enter");
-            Console.ResetColor();
-            Console.ReadLine();
         }
 
         static void ViewAllPassengers()
