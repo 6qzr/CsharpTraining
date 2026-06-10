@@ -1053,16 +1053,21 @@ namespace FlightManagementSystem
                 }
 
                 // Collect all ticket IDs whose flight matches the requested flight into a temporary List.
-                List<string> tickets = new List<string>();
-                foreach (KeyValuePair<string, string> record in bookingRecord)
-                {
-                    string ticketID = record.Key;
-                    string flight = record.Value.Split('|')[0];
-                    if (flight == flightNumber)
-                    {
-                        tickets.Add(ticketID);
-                    }
-                }
+
+                //List<string> tickets = new List<string>();
+                //foreach (KeyValuePair<string, string> record in bookingRecord)
+                //{
+                //    string ticketID = record.Key;
+                //    string flight = record.Value.Split('|')[0];
+                //    if (flight == flightNumber)
+                //    {
+                //        tickets.Add(ticketID);
+                //    }
+                //}
+                List<string> tickets = bookingRecord
+                    .Where(record => record.Value.Split('|')[0] == flightNumber)
+                    .Select(record => record.Key)
+                    .ToList();
 
                 if (tickets.Count == 0)
                 {
@@ -1074,32 +1079,38 @@ namespace FlightManagementSystem
                 }
 
                 // For each collected ticket ID, retrieve the passenger name
-                List<string> passengers = new List<string>();
-                foreach (string ticket in tickets)
-                {
-                    passengers.Add(passengerNames[ticketNumbers.IndexOf(ticket)]);
-                }
+
+                //List<string> passengers = new List<string>();
+                //foreach (string ticket in tickets)
+                //{
+                //    passengers.Add(passengerNames[ticketNumbers.IndexOf(ticket)]);
+                //}
+                List<string> passengers = tickets
+                    .Select(ticket => passengerNames[ticketNumbers.IndexOf(ticket)])
+                    .ToList();
 
                 // Sort the collected passenger records alphabetically by passenger name using a manual bubble sort on a List
-                string temp;
-                string tempTicket;
-                for (int i = 0; i < passengers.Count; i++)
+                for (int i = 0; i < passengers.Count - 1; i++)
                 {
-                    for (int j = passengers.Count - 1; j > 0; j--)
+                    bool swapped = false;
+
+                    for (int j = 0; j < passengers.Count - i - 1; j++)
                     {
-                        if (passengers[j].CompareTo(passengers[j - 1]) < 0)
+                        if (passengers[j].CompareTo(passengers[j + 1]) > 0)
                         {
                             // swap passengers
-                            temp = passengers[j];
-                            passengers[j] = passengers[j - 1];
-                            passengers[j - 1] = temp;
+                            (passengers[j], passengers[j + 1]) = (passengers[j + 1], passengers[j]);
 
-                            // swap tickets at same index
-                            tempTicket = tickets[j];
-                            tickets[j] = tickets[j - 1];
-                            tickets[j - 1] = tempTicket;
+                            // swap tickets
+                            (tickets[j], tickets[j + 1]) = (tickets[j + 1], tickets[j]);
+
+                            swapped = true;
                         }
                     }
+
+                    // stop early if already sorted
+                    if (!swapped)
+                        break;
                 }
 
                 Console.WriteLine($"\n{"No.",-5} {"Passenger Name",-20} {"Ticket ID",-12} {"Date",-14} {"Seat",-8} {"Status"}");
@@ -1278,14 +1289,19 @@ namespace FlightManagementSystem
 
                         while (waitlistQueue.Count > 0)
                         {
-                            if (waitlistQueue.Peek() == passenger)
+                            string tempPass = waitlistQueue.Dequeue();
+
+                            if (tempPass == passenger)
                             {
-                                waitlistQueue.Dequeue();
+                                continue;
                             }
-                            tempQ.Enqueue(waitlistQueue.Dequeue());
+                            tempQ.Enqueue(tempPass);
                         }
 
-                        waitlistQueue = new Queue<string>(tempQ);
+                        while (tempQ.Count > 0)
+                        {
+                            waitlistQueue.Enqueue(tempQ.Dequeue());
+                        }
 
                         flightChoice = GetAvailableFlights();
                         if (flightChoice == 0) return;
