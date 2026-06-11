@@ -10,16 +10,16 @@ namespace FlightManagementSystem
         */
 
         // 5 passenger names
-        static List<string> passengerNames = new List<string> { "Mohammed", "Omar", "Khalid", "Salim", "Naif" };
+        static List<string> passengerNames = new List<string>();
 
         // 5 ticket IDs matching passengerNames index
-        static List<string> ticketNumbers = new List<string> { "TKT-001", "TKT-002", "TKT-003", "TKT-004", "TKT-005" };
+        static List<string> ticketNumbers = new List<string>();
 
         // Array of 6 available flight codes (e.g. OA101–OA106)
-        static string[] flightNumbers = ["OA101", "OA102", "OA103", "OA104", "OA105", "OA106"];
+        static string[] flightNumbers;
 
         // 4 available booking dates (dd-MMM-yyyy)
-        static List<string> availableDates = new List<string>() { "01-Aug-2026", "20-Aug-2026", "01-Sep-2026", "10-Oct-2026" };
+        static List<string> availableDates = new List<string>();
 
         // Key = ticketNumber, Value = flightNumber+date (e.g.'OA101|12-Jan-2026')
         static Dictionary<string, string> bookingRecord = new Dictionary<string, string>();
@@ -38,6 +38,20 @@ namespace FlightManagementSystem
 
         // Passenger names on the standby waitlist
         static Queue<string> waitlistQueue = new Queue<string>();
+
+        static string BaseDir = Path.GetFullPath(Path.Combine(
+        AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "Data"));
+
+        static string PassengersFile = Path.Combine(BaseDir, "Passengers.csv");
+        static string TicketsFile = Path.Combine(BaseDir, "Tickets.csv");
+        static string FlightsFile = Path.Combine(BaseDir, "Flights.csv");
+        static string AvailableDatesFile = Path.Combine(BaseDir, "AvailableDates.csv");
+        static string BookingsFile = Path.Combine(BaseDir, "Bookings.csv");
+        static string CheckedInQueueFile = Path.Combine(BaseDir, "CheckedInQueue.csv");
+        static string BoardingStackFile = Path.Combine(BaseDir, "BoardingStack.csv");
+        static string CancelledTicketsFile = Path.Combine(BaseDir, "CancelledTickets.csv");
+        static string SeatMapFile = Path.Combine(BaseDir, "SeatMap.csv");
+        static string WaitlistQueueFile = Path.Combine(BaseDir, "WaitlistQueue.csv");
 
 
         static int boardingRow = 10;
@@ -120,7 +134,7 @@ namespace FlightManagementSystem
                 }
             }
         }
-
+        
         static void RegisterNewPassenger()
         {
             try
