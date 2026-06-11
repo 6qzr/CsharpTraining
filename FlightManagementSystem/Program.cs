@@ -228,7 +228,7 @@ namespace FlightManagementSystem
                         string[] dates = line.Split(",");
                         foreach (string date in dates)
                         {
-                            availableDates.Add(date);
+                            availableDates.Add(date.Trim());
                         }
                     }
                 }
