@@ -137,6 +137,8 @@ namespace FlightManagementSystem
             }
         }
 
+        
+
         static void LoadData()
         {
             LoadPassengers();
@@ -388,7 +390,7 @@ namespace FlightManagementSystem
                             string[] record = seatMap.Split("|");
                             string passengerName = record[0].Trim();
                             string assignedSeat = record[1].Trim();
-                            bookingRecord[passengerName] = assignedSeat;
+                            passengerSeatMap[passengerName] = assignedSeat;
                         }
                     }
                 }
@@ -404,8 +406,6 @@ namespace FlightManagementSystem
                 Console.ReadLine();
             }
         }
-
-        
 
         static void LoadWaitlistQueue()
         {
@@ -437,6 +437,204 @@ namespace FlightManagementSystem
                 Console.ReadLine();
             }
         }
+
+
+
+        static void SaveData()
+        {
+            SavePassengers();
+            SaveTickets();
+            SaveDates();
+            SaveBookings();
+            SaveCancelledTickets();
+            SaveCheckedInQueue();
+            SaveBoardingStack();
+            SaveSeatMap();
+            SaveWaitlistQueue();
+        }
+
+        static void SavePassengers()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(PassengersFile))
+                {
+                    foreach (string passenger in passengerNames)
+                    {
+                        writer.WriteLine(passenger);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n  Error saving passengers: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        static void SaveTickets()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(TicketsFile))
+                {
+                    foreach (string ticket in ticketNumbers)
+                    {
+                        writer.WriteLine(ticket);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n  Error saving tickets: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        static void SaveDates()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(AvailableDatesFile))
+                {
+                    foreach (string date in availableDates)
+                    {
+                        writer.WriteLine(date);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n  Error saving dates: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        static void SaveBookings()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(BookingsFile))
+                {
+                    foreach (KeyValuePair<string, string> record in bookingRecord)
+                    {
+                        // Format: ticketID|flight|date
+                        string[] parts = record.Value.Split('|');
+                        writer.WriteLine($"{record.Key}|{parts[0]}|{parts[1]}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n  Error saving bookings: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        static void SaveCancelledTickets()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(CancelledTicketsFile))
+                {
+                    foreach (string ticket in cancelledTickets)
+                    {
+                        writer.WriteLine(ticket);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n  Error saving cancelled tickets: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        static void SaveCheckedInQueue()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(CheckedInQueueFile))
+                {
+                    foreach (string passenger in checkedInQueue)
+                    {
+                        writer.WriteLine(passenger);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n  Error saving check-in queue: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        static void SaveBoardingStack()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(BoardingStackFile))
+                {
+                    foreach (string passenger in boardingStack)
+                    {
+                        writer.WriteLine(passenger);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n  Error saving boarding stack: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        static void SaveSeatMap()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(SeatMapFile))
+                {
+                    foreach (KeyValuePair<string, string> record in passengerSeatMap)
+                    {
+                        writer.WriteLine($"{record.Key}|{record.Value}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n  Error saving seat map: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
+        static void SaveWaitlistQueue()
+        {
+            try
+            {
+                using (StreamWriter writer = new StreamWriter(WaitlistQueueFile))
+                {
+                    foreach (string passenger in waitlistQueue)
+                    {
+                        writer.WriteLine(passenger);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\n  Error saving waitlist: {ex.Message}");
+                Console.ResetColor();
+            }
+        }
+
 
         static void RegisterNewPassenger()
         {
