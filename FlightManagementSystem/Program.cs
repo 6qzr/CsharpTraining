@@ -144,10 +144,10 @@ namespace FlightManagementSystem
             LoadDates();
             LoadBookings();
             LoadCancelledTickets();
-            //LoadCheckedIn();
-            //LoadBoarding();
+            LoadCheckedInQueue();
+            LoadBoardingStack();
             LoadSeatMap();
-            //LoadWaitlist();
+            LoadWaitlistQueue();
         }
 
         static void LoadPassengers()
@@ -309,6 +309,68 @@ namespace FlightManagementSystem
             }
         }
 
+        static void LoadCheckedInQueue()
+        {
+            try
+            {
+                if (!File.Exists(CheckedInQueueFile)) return;
+
+                using (StreamReader reader = new StreamReader(CheckedInQueueFile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] passengers = line.Split(",");
+                        foreach (string passenger in passengers)
+                        {
+                            checkedInQueue.Enqueue(passenger);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nAn unexpected error occurred:");
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+
+                Console.WriteLine("\nPress Enter to continue...");
+                Console.ReadLine();
+            }
+        }
+
+        static void LoadBoardingStack()
+        {
+            try
+            {
+                if (!File.Exists(BoardingStackFile)) return;
+
+                using (StreamReader reader = new StreamReader(BoardingStackFile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] passengers = line.Split(",");
+                        foreach (string passenger in passengers)
+                        {
+                            boardingStack.Push(passenger);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nAn unexpected error occurred:");
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+
+                Console.WriteLine("\nPress Enter to continue...");
+                Console.ReadLine();
+            }
+        }
+
         static void LoadSeatMap()
         {
             try
@@ -327,6 +389,39 @@ namespace FlightManagementSystem
                             string passengerName = record[0].Trim();
                             string assignedSeat = record[1].Trim();
                             bookingRecord[passengerName] = assignedSeat;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nAn unexpected error occurred:");
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+
+                Console.WriteLine("\nPress Enter to continue...");
+                Console.ReadLine();
+            }
+        }
+
+        
+
+        static void LoadWaitlistQueue()
+        {
+            try
+            {
+                if (!File.Exists(WaitlistQueueFile)) return;
+
+                using (StreamReader reader = new StreamReader(WaitlistQueueFile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] passengers = line.Split(",");
+                        foreach (string passenger in passengers)
+                        {
+                            waitlistQueue.Enqueue(passenger);
                         }
                     }
                 }
