@@ -16,7 +16,7 @@ namespace FlightManagementSystem
         static List<string> ticketNumbers = new List<string>();
 
         // Array of 6 available flight codes (e.g. OA101–OA106)
-        static string[] flightNumbers;
+        static string[] flightNumbers = ["OA101", "OA102", "OA103", "OA104", "OA105", "OA106"];
 
         // 4 available booking dates (dd-MMM-yyyy)
         static List<string> availableDates = new List<string>();
@@ -44,7 +44,6 @@ namespace FlightManagementSystem
 
         static string PassengersFile = Path.Combine(BaseDir, "Passengers.csv");
         static string TicketsFile = Path.Combine(BaseDir, "Tickets.csv");
-        static string FlightsFile = Path.Combine(BaseDir, "Flights.csv");
         static string AvailableDatesFile = Path.Combine(BaseDir, "AvailableDates.csv");
         static string BookingsFile = Path.Combine(BaseDir, "Bookings.csv");
         static string CheckedInQueueFile = Path.Combine(BaseDir, "CheckedInQueue.csv");
@@ -59,6 +58,9 @@ namespace FlightManagementSystem
 
         static void Main(string[] args)
         {
+            // Load Data
+            LoadData();
+            
             while (true)
             {
                 Console.Clear();
@@ -134,7 +136,144 @@ namespace FlightManagementSystem
                 }
             }
         }
-        
+
+        static void LoadData()
+        {
+            LoadPassengers();
+            LoadTickets();
+            LoadDates();
+            //LoadBookings();
+            LoadCancelledTickets();
+            //LoadCheckedIn();
+            //LoadBoarding();
+            //LoadSeatMap();
+            //LoadWaitlist();
+        }
+
+        static void LoadPassengers()
+        {
+            try
+            {
+                if (!File.Exists(PassengersFile)) return;
+
+                using (StreamReader reader = new StreamReader(PassengersFile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] passengers = line.Split(",");
+                        foreach (string passenger in passengers)
+                        {
+                            passengerNames.Add(passenger.Trim());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nAn unexpected error occurred:");
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+
+                Console.WriteLine("\nPress Enter to continue...");
+                Console.ReadLine();
+            }
+        }
+
+        static void LoadTickets()
+        {
+            try
+            {
+                if (!File.Exists(TicketsFile)) return;
+
+                using (StreamReader reader = new StreamReader(TicketsFile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] tickets = line.Split(",");
+                        foreach (string ticket in tickets)
+                        {
+                            ticketNumbers.Add(ticket.Trim());
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nAn unexpected error occurred:");
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+
+                Console.WriteLine("\nPress Enter to continue...");
+                Console.ReadLine();
+            }
+        }
+
+        static void LoadDates()
+        {
+            try
+            {
+                if (!File.Exists(AvailableDatesFile)) return;
+
+                using (StreamReader reader = new StreamReader(AvailableDatesFile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] dates = line.Split(",");
+                        foreach (string date in dates)
+                        {
+                            availableDates.Add(date);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nAn unexpected error occurred:");
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+
+                Console.WriteLine("\nPress Enter to continue...");
+                Console.ReadLine();
+            }
+        }
+
+        static void LoadCancelledTickets()
+        {
+            try
+            {
+                if (!File.Exists(CancelledTicketsFile)) return;
+
+                using (StreamReader reader = new StreamReader(CancelledTicketsFile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] tickets = line.Split(",");
+                        foreach (string ticket in tickets)
+                        {
+                            cancelledTickets.Add(ticket);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nAn unexpected error occurred:");
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+
+                Console.WriteLine("\nPress Enter to continue...");
+                Console.ReadLine();
+            }
+        }
+
         static void RegisterNewPassenger()
         {
             try
