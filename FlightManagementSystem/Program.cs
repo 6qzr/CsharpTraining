@@ -142,11 +142,11 @@ namespace FlightManagementSystem
             LoadPassengers();
             LoadTickets();
             LoadDates();
-            //LoadBookings();
+            LoadBookings();
             LoadCancelledTickets();
             //LoadCheckedIn();
             //LoadBoarding();
-            //LoadSeatMap();
+            LoadSeatMap();
             //LoadWaitlist();
         }
 
@@ -243,6 +243,41 @@ namespace FlightManagementSystem
             }
         }
 
+        static void LoadBookings()
+        {
+            try
+            {
+                if (!File.Exists(BookingsFile)) return;
+
+                using (StreamReader reader = new StreamReader(BookingsFile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] bookings = line.Split(",");
+                        foreach (string booking in bookings)
+                        {
+                            string[] record = booking.Split("|");
+                            string ticketNumber = record[0].Trim();
+                            string flighNumber = record[1].Trim();
+                            string date = record[2].Trim();
+                            bookingRecord[ticketNumber] = $"{flighNumber}|{date}";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nAn unexpected error occurred:");
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+
+                Console.WriteLine("\nPress Enter to continue...");
+                Console.ReadLine();
+            }
+        }
+
         static void LoadCancelledTickets()
         {
             try
@@ -258,6 +293,40 @@ namespace FlightManagementSystem
                         foreach (string ticket in tickets)
                         {
                             cancelledTickets.Add(ticket);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nAn unexpected error occurred:");
+                Console.WriteLine(ex.Message);
+                Console.ResetColor();
+
+                Console.WriteLine("\nPress Enter to continue...");
+                Console.ReadLine();
+            }
+        }
+
+        static void LoadSeatMap()
+        {
+            try
+            {
+                if (!File.Exists(SeatMapFile)) return;
+
+                using (StreamReader reader = new StreamReader(SeatMapFile))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] seatMaps = line.Split(",");
+                        foreach (string seatMap in seatMaps)
+                        {
+                            string[] record = seatMap.Split("|");
+                            string passengerName = record[0].Trim();
+                            string assignedSeat = record[1].Trim();
+                            bookingRecord[passengerName] = assignedSeat;
                         }
                     }
                 }
