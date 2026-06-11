@@ -689,6 +689,8 @@ namespace FlightManagementSystem
                 passengerNames.Add(passengerFullName);
                 ticketNumbers.Add(newTicket);
 
+                SaveData();
+
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine($"\n  Passenger: {passengerFullName}");
                 Console.WriteLine($"  Ticket:    {newTicket}");
@@ -923,6 +925,8 @@ namespace FlightManagementSystem
             // Store ate bookingRecord
             bookingRecord[ticketID] = $"{flight}|{date}";
 
+            SaveData();
+
             int passengerIndex = ticketNumbers.IndexOf(ticketID);
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -1014,7 +1018,7 @@ namespace FlightManagementSystem
 
             // Display sub-menu
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("\n(1) Change flight only\n(2) Change date only\n(3) Change both\n(0) Cancel updat");
+            Console.WriteLine("\n(1) Change flight only\n(2) Change date only\n(3) Change both\n(0) Save and Back");
             Console.ResetColor();
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("\nSelect option: ");
@@ -1127,6 +1131,7 @@ namespace FlightManagementSystem
                     break;
 
                 case "0":
+                    SaveData();
                     return;
 
                 default:
@@ -1248,6 +1253,8 @@ namespace FlightManagementSystem
                 Console.WriteLine("\n  Passenger not found.");
             }
 
+            SaveData();
+
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("\n--- Cancellation Summary ---");
             Console.WriteLine($"Passenger     : {passengerName}");
@@ -1269,7 +1276,7 @@ namespace FlightManagementSystem
 
                 // Display sub-menu
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("\n(1) Check in a passenger\n(2) View check-in queue\n(3) Process next passenger\n(0) Back");
+                Console.WriteLine("\n(1) Check in a passenger\n(2) View check-in queue\n(3) Process next passenger\n(0) Save Back");
                 Console.ResetColor();
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.Write("\nSelect option: ");
@@ -1368,6 +1375,7 @@ namespace FlightManagementSystem
                         break;
 
                     case "0":
+                        SaveData();
                         return;
 
                     default:
@@ -1401,7 +1409,7 @@ namespace FlightManagementSystem
 
                 // Display sub-menu
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("\n(1) Load boarding stack from check-in queue\n(2) Board next passenger\n(3) View boarding stack\n(4) View boarding log\n(0) Back");
+                Console.WriteLine("\n(1) Load boarding stack from check-in queue\n(2) Board next passenger\n(3) View boarding stack\n(4) View boarding log\n(0) Save and Back");
                 Console.ResetColor();
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.Write("\nSelect option: ");
@@ -1513,6 +1521,7 @@ namespace FlightManagementSystem
                         break;
 
                     case "0":
+                        SaveData();
                         return;
 
                     default:
@@ -1694,7 +1703,7 @@ namespace FlightManagementSystem
 
                 // Display sub-menu
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("\n(1) View waitlist\n(2) Promote next waitlist passenger\n(3) Promote specific waitlist passenger\n(4) Reassign passenger seat\n(0) Back");
+                Console.WriteLine("\n(1) View waitlist\n(2) Promote next waitlist passenger\n(3) Promote specific waitlist passenger\n(4) Reassign passenger seat\n(0) Save and Back");
                 Console.ResetColor();
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.Write("\nSelect option: ");
@@ -1946,6 +1955,7 @@ namespace FlightManagementSystem
                         break;
 
                     case "0":
+                        SaveData();
                         return;
 
                     default:
